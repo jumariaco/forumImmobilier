@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PublicationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,6 +33,25 @@ class Publication
 
     #[ORM\Column(length: 190, nullable: true)]
     private ?string $typeMime = null;
+
+    #[ORM\ManyToMany(targetEntity: Domaine::class, inversedBy: 'publications')]
+    private Collection $domaines;
+
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: Commentaire::class)]
+    private Collection $commentaires;
+
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: Like::class)]
+    private Collection $likes;
+
+    #[ORM\ManyToOne(inversedBy: 'publications')]
+    private ?User $user = null;
+
+    public function __construct()
+    {
+        $this->domaines = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
+        $this->likes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -105,6 +126,102 @@ class Publication
     public function setTypeMime(?string $typeMime): static
     {
         $this->typeMime = $typeMime;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Domaine>
+     */
+    public function getDomaines(): Collection
+    {
+        return $this->domaines;
+    }
+
+    public function addDomaine(Domaine $domaine): static
+    {
+        if (!$this->domaines->contains($domaine)) {
+            $this->domaines->add($domaine);
+        }
+
+        return $this;
+    }
+
+    public function removeDomaine(Domaine $domaine): static
+    {
+        $this->domaines->removeElement($domaine);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commentaire>
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(Commentaire $commentaire): static
+    {
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires->add($commentaire);
+            $commentaire->setPublication($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaire $commentaire): static
+    {
+        if ($this->commentaires->removeElement($commentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getPublication() === $this) {
+                $commentaire->setPublication(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Like>
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(Like $like): static
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes->add($like);
+            $like->setPublication($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(Like $like): static
+    {
+        if ($this->likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getPublication() === $this) {
+                $like->setPublication(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

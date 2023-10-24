@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PartenaireRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PartenaireRepository::class)]
@@ -36,6 +38,18 @@ class Partenaire
 
     #[ORM\Column(nullable: true)]
     private ?int $departement = null;
+
+    #[ORM\ManyToOne(inversedBy: 'partenaires')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Titre $titre = null;
+
+    #[ORM\ManyToMany(targetEntity: Domaine::class, inversedBy: 'partenaires')]
+    private Collection $domaines;
+
+    public function __construct()
+    {
+        $this->domaines = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -134,6 +148,42 @@ class Partenaire
     public function setDepartement(?int $departement): static
     {
         $this->departement = $departement;
+
+        return $this;
+    }
+
+    public function getTitre(): ?Titre
+    {
+        return $this->titre;
+    }
+
+    public function setTitre(?Titre $titre): static
+    {
+        $this->titre = $titre;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Domaine>
+     */
+    public function getDomaines(): Collection
+    {
+        return $this->domaines;
+    }
+
+    public function addDomaine(Domaine $domaine): static
+    {
+        if (!$this->domaines->contains($domaine)) {
+            $this->domaines->add($domaine);
+        }
+
+        return $this;
+    }
+
+    public function removeDomaine(Domaine $domaine): static
+    {
+        $this->domaines->removeElement($domaine);
 
         return $this;
     }

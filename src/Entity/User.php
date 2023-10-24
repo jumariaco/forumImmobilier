@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -38,6 +40,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private ?bool $newsletter = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Publication::class)]
+    private Collection $publications;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Commentaire::class)]
+    private Collection $commentaires;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Partenaire $partenaire = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Membre $membre = null;
+
+    #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'abonnes')]
+    private Collection $abonnement;
+
+    #[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'abonnement')]
+    private Collection $abonnes;
+
+    public function __construct()
+    {
+        $this->publications = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
+        $this->abonnement = new ArrayCollection();
+        $this->abonnes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -172,6 +200,141 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setNewsletter(bool $newsletter): static
     {
         $this->newsletter = $newsletter;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Publication>
+     */
+    public function getPublications(): Collection
+    {
+        return $this->publications;
+    }
+
+    public function addPublication(Publication $publication): static
+    {
+        if (!$this->publications->contains($publication)) {
+            $this->publications->add($publication);
+            $publication->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublication(Publication $publication): static
+    {
+        if ($this->publications->removeElement($publication)) {
+            // set the owning side to null (unless already changed)
+            if ($publication->getUser() === $this) {
+                $publication->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commentaire>
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(Commentaire $commentaire): static
+    {
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires->add($commentaire);
+            $commentaire->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaire $commentaire): static
+    {
+        if ($this->commentaires->removeElement($commentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getUser() === $this) {
+                $commentaire->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getPartenaire(): ?Partenaire
+    {
+        return $this->partenaire;
+    }
+
+    public function setPartenaire(?Partenaire $partenaire): static
+    {
+        $this->partenaire = $partenaire;
+
+        return $this;
+    }
+
+    public function getMembre(): ?Membre
+    {
+        return $this->membre;
+    }
+
+    public function setMembre(?Membre $membre): static
+    {
+        $this->membre = $membre;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getAbonnement(): Collection
+    {
+        return $this->abonnement;
+    }
+
+    public function addAbonnement(self $abonnement): static
+    {
+        if (!$this->abonnement->contains($abonnement)) {
+            $this->abonnement->add($abonnement);
+        }
+
+        return $this;
+    }
+
+    public function removeAbonnement(self $abonnement): static
+    {
+        $this->abonnement->removeElement($abonnement);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getAbonnes(): Collection
+    {
+        return $this->abonnes;
+    }
+
+    public function addAbonne(self $abonne): static
+    {
+        if (!$this->abonnes->contains($abonne)) {
+            $this->abonnes->add($abonne);
+            $abonne->addAbonnement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAbonne(self $abonne): static
+    {
+        if ($this->abonnes->removeElement($abonne)) {
+            $abonne->removeAbonnement($this);
+        }
 
         return $this;
     }
