@@ -18,7 +18,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use TimestampableEntity;
     use SoftDeleteableEntity;
-    
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -60,11 +60,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Membre $membre = null;
 
+
+
     #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'abonnes')]
     private Collection $abonnement;
 
     #[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'abonnement')]
     private Collection $abonnes;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Like::class)]
+    private Collection $likes;
 
     public function __construct()
     {
@@ -72,6 +77,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->commentaires = new ArrayCollection();
         $this->abonnement = new ArrayCollection();
         $this->abonnes = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -295,6 +301,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    
+
     /**
      * @return Collection<int, self>
      */
@@ -341,6 +349,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->abonnes->removeElement($abonne)) {
             $abonne->removeAbonnement($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Like>
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(Like $like): static
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes->add($like);
+            $like->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(Like $like): static
+    {
+        if ($this->likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getUser() === $this) {
+                $like->setUser(null);
+            }
         }
 
         return $this;

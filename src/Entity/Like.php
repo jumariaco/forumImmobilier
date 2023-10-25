@@ -15,24 +15,29 @@ class Like
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'likes')]
-    private ?Publication $publication = null;
+    private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'likes')]
     private ?Commentaire $commentaire = null;
+
+    #[ORM\ManyToOne(inversedBy: 'likes')]
+    private ?Publication $publication = null;
+
+  
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getPublication(): ?Publication
+    public function getUser(): ?User
     {
-        return $this->publication;
+        return $this->user;
     }
 
-    public function setPublication(?Publication $publication): static
+    public function setUser(?User $user): static
     {
-        $this->publication = $publication;
+        $this->user = $user;
 
         return $this;
     }
@@ -48,4 +53,18 @@ class Like
 
         return $this;
     }
+
+    public function getPublication(): ?Publication
+    {
+        return $this->publication;
+    }
+
+    public function setPublication(?Publication $publication): static
+    {
+        $this->publication = $publication;
+
+        return $this;
+    }
+
+    
 }

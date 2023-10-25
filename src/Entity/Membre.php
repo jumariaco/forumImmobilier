@@ -38,6 +38,8 @@ class Membre
     #[ORM\JoinColumn(nullable: false)]
     private ?Titre $titre = null;
 
+    
+
     public function __construct()
     {
         $this->domaines = new ArrayCollection();
@@ -119,4 +121,6 @@ class Membre
 
         return $this;
     }
+
+   
 }

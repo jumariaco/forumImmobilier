@@ -41,11 +41,12 @@ class Commentaire
     #[ORM\ManyToOne(inversedBy: 'commentaires')]
     private ?Publication $publication = null;
 
-    #[ORM\OneToMany(mappedBy: 'commentaire', targetEntity: Like::class)]
-    private Collection $likes;
 
     #[ORM\ManyToOne(inversedBy: 'commentaires')]
     private ?User $user = null;
+
+    #[ORM\OneToMany(mappedBy: 'commentaire', targetEntity: Like::class)]
+    private Collection $likes;
 
     public function __construct()
     {
@@ -129,7 +130,20 @@ class Commentaire
         return $this;
     }
 
-    /**
+   
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+     /**
      * @return Collection<int, Like>
      */
     public function getLikes(): Collection
@@ -155,18 +169,6 @@ class Commentaire
                 $like->setCommentaire(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): static
-    {
-        $this->user = $user;
 
         return $this;
     }

@@ -53,6 +53,8 @@ class Partenaire
     #[ORM\ManyToMany(targetEntity: Domaine::class, inversedBy: 'partenaires')]
     private Collection $domaines;
 
+    
+
     public function __construct()
     {
         $this->domaines = new ArrayCollection();
@@ -194,4 +196,5 @@ class Partenaire
 
         return $this;
     }
+
 }
