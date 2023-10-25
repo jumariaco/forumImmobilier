@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Publication{% endblock %}
+
+{% block body %}
+    <h1>Publication</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ publication.id }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ publication.titre }}</td>
+            </tr>
+            <tr>
+                <th>Contenu</th>
+                <td>{{ publication.contenu }}</td>
+            </tr>
+            <tr>
+                <th>Statut</th>
+                <td>{{ publication.statut ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>ImageName</th>
+                <td>{{ publication.imageName }}</td>
+            </tr>
+            <tr>
+                <th>ImageSize</th>
+                <td>{{ publication.imageSize }}</td>
+            </tr>
+            <tr>
+                <th>TypeMime</th>
+                <td>{{ publication.typeMime }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ publication.createdAt ? publication.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ publication.updatedAt ? publication.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DeletedAt</th>
+                <td>{{ publication.deletedAt ? publication.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_publication_index') }}">back to list</a>
+
+    <a href="{{ path('app_admin_publication_edit', {'id': publication.id}) }}">edit</a>
+
+    {{ include('admin/publication/_delete_form.html.twig') }}
+{% endblock %}
