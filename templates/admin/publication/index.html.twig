@@ -12,9 +12,7 @@
                 <th>Titre</th>
                 <th>Contenu</th>
                 <th>Statut</th>
-                <th>ImageName</th>
-                <th>ImageSize</th>
-                <th>TypeMime</th>
+                <th>ImageFile</th>
                 <th>CreatedAt</th>
                 <th>UpdatedAt</th>
                 <th>DeletedAt</th>
@@ -26,11 +24,13 @@
             <tr>
                 <td>{{ publication.id }}</td>
                 <td>{{ publication.titre }}</td>
-                <td>{{ publication.contenu }}</td>
-                <td>{{ publication.statut ? 'Yes' : 'No' }}</td>
-                <td>{{ publication.imageName }}</td>
-                <td>{{ publication.imageSize }}</td>
-                <td>{{ publication.typeMime }}</td>
+                <td>{{ publication.contenu|u.truncate(100, '...')|raw }} <a href="{{ path('app_admin_publication_show', {'id': publication.id}) }}"> Lire plus</a></td>
+                <td>{{ publication.statut ? 'Publié' : 'Brouillon' }}</td>
+                <td>
+                    {% if vich_uploader_asset(publication, 'imageFile') is not empty %}
+                    <img src="{{ vich_uploader_asset(publication, 'imageFile') | imagine_filter('miniature') }}" alt="{{ publication.imageName }}">
+                    {% endif %}
+                </td>
                 <td>{{ publication.createdAt ? publication.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ publication.updatedAt ? publication.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ publication.deletedAt ? publication.deletedAt|date('Y-m-d H:i:s') : '' }}</td>

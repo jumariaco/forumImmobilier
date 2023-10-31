@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Titre{% endblock %}
+
+{% block body %}
+    <h1>Titre</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ titre.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ titre.nom }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ titre.createdAt ? titre.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ titre.updatedAt ? titre.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DeletedAt</th>
+                <td>{{ titre.deletedAt ? titre.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_titre_index') }}">back to list</a>
+
+    <a href="{{ path('app_admin_titre_edit', {'id': titre.id}) }}">edit</a>
+
+    {{ include('admin/titre/_delete_form.html.twig') }}
+{% endblock %}

@@ -17,11 +17,19 @@
             </tr>
             <tr>
                 <th>Contenu</th>
-                <td>{{ publication.contenu }}</td>
+                <td>{{ publication.contenu|raw }}</td>
             </tr>
             <tr>
                 <th>Statut</th>
-                <td>{{ publication.statut ? 'Yes' : 'No' }}</td>
+                <td>{{ publication.statut ? 'Publié' : 'Brouillon' }}</td>
+            </tr>
+            <tr>
+                <th>ImageFile</th>
+                <td>
+                    {% if vich_uploader_asset(publication, 'image') is not empty %}
+                    <img src="{{ vich_uploader_asset(publication, 'image') }}">
+                    {% endif %}
+                </td>
             </tr>
             <tr>
                 <th>ImageName</th>
@@ -49,6 +57,7 @@
             </tr>
         </tbody>
     </table>
+    
 
     <a href="{{ path('app_admin_publication_index') }}">back to list</a>
 

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Titre{% endblock %}
+
+{% block body %}
+    <h1>Create new Titre</h1>
+
+    {{ include('admin/titre/_form.html.twig') }}
+
+    <a href="{{ path('app_admin_titre_index') }}">back to list</a>
+{% endblock %}

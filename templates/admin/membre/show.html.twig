@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Membre{% endblock %}
+
+{% block body %}
+    <h1>Membre</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ membre.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ membre.nom }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ membre.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Metier</th>
+                <td>{{ membre.metier }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ membre.createdAt ? membre.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ membre.updatedAt ? membre.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DeletedAt</th>
+                <td>{{ membre.deletedAt ? membre.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_membre_index') }}">back to list</a>
+
+    <a href="{{ path('app_admin_membre_edit', {'id': membre.id}) }}">edit</a>
+
+    {{ include('admin/membre/_delete_form.html.twig') }}
+{% endblock %}

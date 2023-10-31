@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Titre index{% endblock %}
+
+{% block body %}
+    <h1>Titre index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>DeletedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for titre in titres %}
+            <tr>
+                <td>{{ titre.id }}</td>
+                <td>{{ titre.nom }}</td>
+                <td>{{ titre.createdAt ? titre.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ titre.updatedAt ? titre.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ titre.deletedAt ? titre.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_admin_titre_show', {'id': titre.id}) }}">show</a>
+                    <a href="{{ path('app_admin_titre_edit', {'id': titre.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_titre_new') }}">Create new</a>
+{% endblock %}

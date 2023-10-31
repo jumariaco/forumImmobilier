@@ -11,9 +11,7 @@
                 <th>Id</th>
                 <th>Contenu</th>
                 <th>ChoixRetenu</th>
-                <th>ImageName</th>
-                <th>ImageSize</th>
-                <th>TypeMime</th>
+                <th>ImageFile</th>
                 <th>CreatedAt</th>
                 <th>UpdatedAt</th>
                 <th>DeletedAt</th>
@@ -24,11 +22,12 @@
         {% for commentaire in commentaires %}
             <tr>
                 <td>{{ commentaire.id }}</td>
-                <td>{{ commentaire.contenu }}</td>
+                <td>{{ commentaire.contenu|raw|u.truncate(100, '...') }}</td>
                 <td>{{ commentaire.choixRetenu ? 'Yes' : 'No' }}</td>
-                <td>{{ commentaire.imageName }}</td>
-                <td>{{ commentaire.imageSize }}</td>
-                <td>{{ commentaire.typeMime }}</td>
+                <td>{% if commentaire.imageFile %}
+                    <img src="{{ vich_uploader_asset(commentaire.imageFile, 'image_commentaire') }}" alt="Commentaire Image">
+                    {% endif %}
+                </td>
                 <td>{{ commentaire.createdAt ? commentaire.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ commentaire.updatedAt ? commentaire.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ commentaire.deletedAt ? commentaire.deletedAt|date('Y-m-d H:i:s') : '' }}</td>

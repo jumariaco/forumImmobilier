@@ -138,4 +138,8 @@ class Domaine
 
         return $this;
     }
+    function __toString()
+    {
+        return $this->nom;
+    }
 }

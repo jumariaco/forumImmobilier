@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -32,7 +33,12 @@ class Commentaire
     #[ORM\Column(nullable: true)]
     private ?bool $choixRetenu = null;
 
-    #[Vich\UploadableField(mapping: 'image_commentaire', fileNameProperty: 'imageName', size: 'imageSize', mimeTypes: ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'])]
+    #[Assert\File(
+        maxSize: '1024k',
+        mimeTypes: ['application/pdf','image/jpeg', 'image/png', 'image/gif'],
+        mimeTypesMessage: 'Merci d\'utiliser un fichier de type PDF, JPEG, PNG ou GIF'
+    )]
+    #[Vich\UploadableField(mapping: 'image_commentaire', fileNameProperty: 'imageName', size: 'imageSize')]
     private ?File $imageFile = null;
 
     #[ORM\Column(length: 190, nullable: true)]
@@ -88,7 +94,7 @@ class Commentaire
         return $this;
     }
 
-    /**             si utilise Doctrine !! entrer manuellement car type $file
+    /**            
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
      * of 'UploadedFile' is injected into this setter to trigger the update. If this
      * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
@@ -201,5 +207,10 @@ class Commentaire
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->contenu;
     }
 }

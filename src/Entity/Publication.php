@@ -11,6 +11,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[Gedmo\SoftDeleteable(fieldName:"deletedAt", timeAware:false, hardDelete:false)]
@@ -35,7 +36,12 @@ class Publication
     #[ORM\Column]
     private ?bool $statut = null;
 
-    #[Vich\UploadableField(mapping: 'image_publication', fileNameProperty: 'imageName', size: 'imageSize', mimeTypes: ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'])]
+    #[Assert\File(
+        maxSize: '2048k',
+        mimeTypes: ['application/pdf','image/jpeg', 'image/jpg', 'image/png', 'image/gif'],
+        mimeTypesMessage: 'Merci d\'utiliser un fichier de type PDF, JPG, JPEG, PNG ou GIF'
+    )]
+    #[Vich\UploadableField(mapping: 'image_publication', fileNameProperty: 'imageName', size: 'imageSize')]
     private ?File $imageFile = null;
 
     #[ORM\Column(length: 190, nullable: true)]
@@ -107,7 +113,7 @@ class Publication
         return $this;
     }
 
-    /**             si utilise Doctrine !! entrer manuellement car type $file
+    /**             
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
      * of 'UploadedFile' is injected into this setter to trigger the update. If this
      * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
@@ -263,5 +269,9 @@ class Publication
         }
 
         return $this;
+    }
+    function __toString()
+    {
+        return $this->titre;
     }
 }
