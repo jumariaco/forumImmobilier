@@ -1,0 +1,16 @@
+
+body {
+    background-color: #1D3164;
+}
+
+.form_scrollable-checkboxes {
+    display: flex;
+    flex-direction: column;
+    height: 10rem;
+    width: 400px;
+    overflow: scroll;
+    background-color: white;
+    input {
+        float: left;
+    }
+}
