@@ -15,7 +15,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 Use Vich\UploaderBundle\Form\Type\VichImageType;
 
-class PublicationType extends AbstractType
+class ArticleType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -26,7 +26,7 @@ class PublicationType extends AbstractType
             ->add('imageFile', VichImageType::class, [
                 'required' => false,
                 'allow_delete' => true,
-                'label' => 'Image Publication',
+                'label' => 'Image Article',
             ])
             ->add('domaines', EntityType::class, [
                 'class' => Domaine::class,
@@ -51,18 +51,8 @@ class PublicationType extends AbstractType
                     return $er->createQueryBuilder('u')
                         ->orderBy('u.id', 'ASC');
                 }
-                
-            ]);  
-            // a tester pour sélectionner automatiquement l'user connecté
-            // $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            //     $form = $event->getForm();
-            //     $data = $event->getData();
-    
-            //     // Si vous avez un utilisateur connecté, attribuez son ID au champ 'user'
-            //     if ($this->security->getUser()) {
-            //         $data->setUser($this->security->getUser());
-            //     }
-            // });    
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

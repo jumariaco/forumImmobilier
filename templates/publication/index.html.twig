@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Publications{% endblock %}
+
+    
+{% block body %}
+    <h1>Liste des publications</h1>
+
+<a href="{{ path('app_publication_new') }}">Nouvelle Publication</a>
+    {% for publication in publications %}
+        {% if 'ROLE_ADMIN' not in publication.user.roles %}
+                <h2>{{ publication.titre }}</h2>
+
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Auteur</th>
+                            <td><a href= "{{path('app_admin_user_show', {id:publication.user.id})}}">{{ publication.user.pseudo }}</td>
+                            <th>Posté le </th>
+                            <td>{{ publication.createdAt ? publication.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Domaines</th>
+                            <td>{% for domaine in publication.domaines %}
+                            <a href= "{{path('app_admin_domaine_show', {id:domaine.id})}}">{{domaine.nom}}{% if not loop.last %},{% endif %}
+                            {% endfor %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Contenu</th>
+                            <td>{{ publication.contenu|u.truncate(100, '...')|raw }} <a href="{{ path('app_publication_show', {'id': publication.id}) }}"> Lire plus</a></td>
+                        </tr>
+                        <tr>
+                            <th>ImageFile</th>
+                            <td>
+                                {% if vich_uploader_asset(publication, 'imageFile') %}
+                                <img src="{{ vich_uploader_asset(publication, 'imageFile') }}">
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Commentaires</th>
+                            <td>{{ publication.commentaires|length }}</td>
+                        </tr>
+                        <tr>
+                            <th>Statut</th>
+                            <td>{{ publication.statut ? 'Publié' : 'Brouillon' }}</td>
+                        </tr>
+                        <td>
+                            <a href="{{ path('app_publication_show', {'id': publication.id}) }}">show</a>
+                            <a href="{{ path('app_publication_edit', {'id': publication.id}) }}">edit</a>
+                        </td>
+                    </tbody>
+                </table>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

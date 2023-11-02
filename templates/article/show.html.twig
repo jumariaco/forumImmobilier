@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Publication{% endblock %}
+{% block title %}Article{% endblock %}
 
 {% block body %}
     <h1>{{ publication.titre }}</h1>
@@ -9,7 +9,7 @@
         <tbody>
             <tr>
                 <th>Auteur</th>
-                <td><a href= "{{path('app_admin_user_show', {id:publication.user.id})}}">{{ publication.user.pseudo }}</td>
+                <td><a href= "{{path('app_user_show', {id:publication.user.id})}}">{{ publication.user.pseudo }}</td>
             </tr>
             <tr>
                 <th>Posté le </th>
@@ -18,14 +18,6 @@
             <tr>
                 <th>Mise à jour</th>
                 <td>{{ publication.updatedAt ? publication.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            {% if publication.deletedAt %}
-            <tr>
-                <th>Supprimé le</th>
-                <td>{{ publication.deletedAt ? publication.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            {% endif %}
-            <tr>
                 <th>Contenu</th>
                 <td>{{ publication.contenu|raw }}</td>
             </tr>
@@ -39,31 +31,21 @@
             <tr>
                 <th>Domaines</th>
                 <td>{% for domaine in publication.domaines %}
-                <a href= "{{path('app_admin_domaine_show', {id:domaine.id})}}">{{domaine.nom}}{% if not loop.last %},{% endif %}
+                <a href= "{{path('app_domaine_show', {id:domaine.id})}}">{{domaine.nom}}{% if not loop.last %},{% endif %}
                 {% endfor %}
                 </td>
-            </tr>
-                <th>Statut</th>
-                <td>{{ publication.statut ? 'Publié' : 'Brouillon' }}</td>
-            </tr>
-            <tr>
-                <th>Id : </th>
-                <td>{{ publication.id }}</td>
-            </tr>
         </tbody>
     </table>
-        {{ include('admin/publication/_delete_form.html.twig') }}
-<a href="{{ path('app_admin_publication_index') }}">back to list</a>
-
-    <a href="{{ path('app_admin_publication_edit', {'id': publication.id}) }}">edit</a>
+       
+<a href="{{ path('app_article_index') }}">Retour à la liste</a>
             
     <h2>Commentaires</h2>
     <table class="table">
         {% for commentaire in publication.commentaires %}
             <tr>
-                <th><a href= "{{path('app_admin_user_show', {id:publication.user.id})}}">{{commentaire.user.pseudo}}</th>
+                <th><a href= "{{path('app_user_show', {id:publication.user.id})}}">{{commentaire.user.pseudo}}</th>
                 <td>
-                <a href= "{{path('app_admin_commentaire_show', {id:commentaire.id})}}">
+                <a href= "{{path('app_commentaire_show', {id:commentaire.id})}}">
                 {{commentaire.contenu}}{% if not loop.last %}<br>{% endif %}
                 {% endfor %}
                 </td>

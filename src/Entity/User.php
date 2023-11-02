@@ -383,8 +383,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-    function __toString()
-    {
-        return $this->Pseudo;
-    }
+    // function __toString()
+    // {
+    //     return $this->Pseudo;
+    // }
 }

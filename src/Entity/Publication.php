@@ -270,8 +270,8 @@ class Publication
 
         return $this;
     }
-    function __toString()
-    {
-        return $this->titre;
-    }
+    // function __toString()
+    // {
+    //     return $this->titre;
+    // }
 }

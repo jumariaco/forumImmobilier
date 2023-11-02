@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Publication{% endblock %}
+{% block title %}Article{% endblock %}
 
 {% block body %}
     <h1>{{ publication.titre }}</h1>
@@ -46,16 +46,20 @@
                 <th>Statut</th>
                 <td>{{ publication.statut ? 'Publié' : 'Brouillon' }}</td>
             </tr>
+            
+            
+            
+            
             <tr>
                 <th>Id : </th>
                 <td>{{ publication.id }}</td>
             </tr>
         </tbody>
     </table>
-        {{ include('admin/publication/_delete_form.html.twig') }}
-<a href="{{ path('app_admin_publication_index') }}">back to list</a>
+        {{ include('admin/article/_delete_form.html.twig') }}
+<a href="{{ path('app_admin_article_index') }}">Retour à la liste</a>
 
-    <a href="{{ path('app_admin_publication_edit', {'id': publication.id}) }}">edit</a>
+    <a href="{{ path('app_admin_article_edit', {'id': publication.id}) }}">Modifier</a>
             
     <h2>Commentaires</h2>
     <table class="table">

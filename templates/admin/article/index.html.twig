@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Publications{% endblock %}
+{% block title %}Articles{% endblock %}
 
     
 {% block body %}
-    <h1>Liste des publications</h1>
+    <h1>Liste des articles</h1>
 
-<a href="{{ path('app_admin_publication_new') }}">Nouvelle publication</a>
+<a href="{{ path('app_admin_article_new') }}">Nouvel article</a>
 
     <table class="table">
         <thead>
@@ -27,12 +27,12 @@
         </thead>
         <tbody>
         {% for publication in publications %}
-            {% if 'ROLE_ADMIN' not in publication.user.roles %}
+            {% if 'ROLE_ADMIN' in publication.user.roles %}
                 <tr>
                     <td>{{ publication.id }}</td>
                     <td>{{ publication.user.pseudo }}</td>
                     <td>{{ publication.titre }}</td>
-                    <td>{{ publication.contenu|u.truncate(100, '...')|raw }} <a href="{{ path('app_admin_publication_show', {'id': publication.id}) }}"> Lire plus</a></td>
+                    <td>{{ publication.contenu|u.truncate(100, '...')|raw }} <a href="{{ path('app_admin_article_show', {'id': publication.id}) }}"> Lire plus</a></td>
                     <td>
                         {% if vich_uploader_asset(publication, 'imageFile') is not empty %}
                         <img src="{{ vich_uploader_asset(publication, 'imageFile') | imagine_filter('miniature') }}" alt="{{ publication.imageName }}">
@@ -45,8 +45,8 @@
                     <td>{{ publication.updatedAt ? publication.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                     <td>{{ publication.deletedAt ? publication.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
                     <td>
-                        <a href="{{ path('app_admin_publication_show', {'id': publication.id}) }}">show</a>
-                        <a href="{{ path('app_admin_publication_edit', {'id': publication.id}) }}">edit</a>
+                        <a href="{{ path('app_admin_article_show', {'id': publication.id}) }}">Détails</a>
+                        <a href="{{ path('app_admin_article_edit', {'id': publication.id}) }}">Modifier</a>
                     </td>
                 </tr>
             {% endif %}
