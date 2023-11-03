@@ -1,0 +1,95 @@
+{% extends "base.html.twig" %}
+
+{% block title %}FORUM IMMOBILIER{% endblock %}
+{% block body %}
+    <h1>Bienvenue sur le 1er forum d'expertise immobilière </h1>
+
+
+{# ------------------------------------------------------------------------------------------------------
+------------------------------RESULTATS DE LA BARRE DE RECHERCHE PUBLICATIONS ET ARTICLES---------------
+------------------------------------------------------------------------------------------------------ #}
+
+  {# Affichez les résultats si le formulaire est soumis #}
+    {% if app.request.query.has('keyword') %}
+        {# Traitez la recherche et affichez les résultats ici #}
+        {% if results is empty %}
+            <ul>
+                <h2>Résultats : </h2><br/>
+                <p>Aucun résultat trouvé.</p>
+            </ul>
+        {% else %}
+            <ul>
+                <h2>Résultats : </h2><br/>
+                {% for user in results %}
+                    {% if user.pseudo is defined %}
+                    <li>
+                        {{user.pseudo}}
+                        <a href= "{{path('app_admin_user_show', {id:user.id})}}">{{ user.pseudo }}</a>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+                {% for publication in results %}
+                    {% if publication.contenu or publication.titre is defined %}
+                        <h2>{{ publication.titre }}</h2>
+                        <table class="table">
+                        <tbody>
+                            <tr>
+                                <th>Auteur</th>
+                                <td><a href= "{{path('app_admin_user_show', {id:publication.user.id})}}">{{ publication.user.pseudo }}</td>
+                                <th>Posté le </th>
+                                <td>{{ publication.createdAt ? publication.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Domaines</th>
+                                <td>{% for domaine in publication.domaines %}
+                                <a href= "{{path('app_admin_domaine_show', {id:domaine.id})}}">{{domaine.nom}}{% if not loop.last %},{% endif %}
+                                {% endfor %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Contenu</th>
+                                <td>{{ publication.contenu|u.truncate(100, '...')|raw }} 
+                                {% if 'ROLE_ADMIN' not in publication.user.roles %}
+                                    <a href="{{ path('app_publication_show', {'id': publication.id}) }}"> Lire plus</a>
+                                {% elseif 'ROLE_ADMIN' in publication.user.roles %}
+                                    <a href="{{ path('app_article_show', {'id': publication.id}) }}"> Lire plus</a>
+                                {% else %}{% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>ImageFile</th>
+                                <td>
+                                    {% if vich_uploader_asset(publication, 'imageFile') %}
+                                    <img loading = "lazy" src="{{ vich_uploader_asset(publication, 'imageFile') }}">
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Commentaires</th>
+                                <td>{{ publication.commentaires|length }}</td>
+                            </tr>
+                            <tr>
+                                <th>Statut</th>
+                                <td>{{ publication.statut ? 'Publié' : 'Brouillon' }}</td>
+                            </tr>
+                            <td>
+                            {% if 'ROLE_ADMIN' not in publication.user.roles %}
+                                <a href="{{ path('app_publication_edit', {'id': publication.id}) }}">edit</a>
+                            {% elseif 'ROLE_ADMIN' in publication.user.roles %}
+                                <a href="{{ path('app_article_edit', {'id': publication.id}) }}">edit</a>
+                            {% else %}{% endif %}
+                            </td>
+                        </tbody>
+                    </table>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endif %}
+{# ----------------------------------------------------------------------------------------------------
+------------------------------------FIN DES RESULTATS DE LA BARRE DE RECHERCHE -----------------------
+------------------------------------------------------------------------------------------------------ #}
+                                                        
+
+{% endblock %}
+

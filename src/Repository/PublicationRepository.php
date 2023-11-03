@@ -21,6 +21,17 @@ class PublicationRepository extends ServiceEntityRepository
         parent::__construct($registry, Publication::class);
     }
 
+    /**
+     * @return Publication[] Returns an array of User objects
+     */
+    public function RecherchePublication($keyword)
+{
+    return $this->createQueryBuilder('p')
+        ->where('p.titre LIKE :keyword OR p.contenu LIKE :keyword')
+        ->setParameter('keyword', '%' . $keyword . '%')
+        ->getQuery()
+        ->getResult();
+}
 //    /**
 //     * @return Publication[] Returns an array of Publication objects
 //     */

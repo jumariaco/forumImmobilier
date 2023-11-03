@@ -1,19 +1,110 @@
-<!DOCTYPE html>
+
+        <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        <title>{% block title %}{% endblock %}</title>
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        {#  ds les blocks ci-dessous mettre balises styles pr back ou front #}
         {% block stylesheets %}
+            {# tjs mettre les balises de CDN avant mon code #}
+            {# sert au chargement via CDN #}
+            {# <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> #}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
         {% block javascripts %}
+            {# tjs mettre les balises de CDN avant mon code #}
+            {# sert au chargement via CDN #}
+            {# <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous" defer></script> #}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
     <body>
+        {% block header %}
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                        <div class="container-fluid">
+                        {# ci-dessous mieux mettre un path que l'url directe ds symfony = moins de risqu d'erreurs #}
+                            <a class="navbar-brand" href="{{path ('app_home')}}">FORUM IMMOBILIER</a>
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                                       
+                                    {# barre de recherche #}
+                                    <form class="d-flex" role="search" action="{{ path('app_home_recherche') }}">
+                                        <input class="form-control me-2" type="search" name="keyword" id="searchInput" placeholder="Search" aria-label="Search" value="{{ app.request.query.get('keyword') }}">
+                                        <button class="btn btn-outline-success" type="submit">Search</button>
+                                    </form>
+                                    {# fin barre de recherche #}
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                        <li class="nav-item">
+                                          <li class="nav-item">
+                                            <a class="nav-link" href="{{path ('app_publication_index')}}">Publications</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{path ('app_article_index')}}">Articles</a>
+                                        </li>
+                                        {# <li class="nav-item">
+                                            <a class="nav-link" href="{{path ('app_domaine_index')}}">Domaines</a>
+                                        </li> #}
+                                    {% if app.user %}
+                                    
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                        {# onglets ADMIN #}
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{path ('app_admin_publication_index')}}"> Publications</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{path ('app_admin_article_index')}}">Articles</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{path ('app_admin_domaine_index')}}">Domaines</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{path ('app_admin_user_index')}}">Utilisateurs</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{path ('app_admin_titre_index')}}">Titres</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{path ('app_admin_commentaire_index')}}">Commentaires à valider</a>
+                                        </li>
+                                        {% else %}
+                                        {# onglets UTILISATEUR #}
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{path ('app_publication_index')}}">Mes Publications</a>
+                                        </li>
+                                        {% endif %}
+                                        
+                                        
+                                        
+                                    {% endif %}
+                                    
+                                </ul>    
+                                {% if app.user %}
+                                    <div>
+                                        Bonjour {{ app.user.userIdentifier }}, {#<a href="{{ path('app_logout') }}">Déconnexion</a>#}
+                                    </div>
+                                {% else %}
+                                    <div>
+                                        {# <a href="{{ path('app_login') }}">#}Connexion{#</a> #}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+
+        {% endblock %}
         {% block body %}{% endblock %}
     </body>
 </html>
+
+
