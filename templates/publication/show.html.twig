@@ -9,7 +9,7 @@
         <tbody>
             <tr>
                 <th>Auteur</th>
-                <td><a href= "{{path('app_user_show', {id:publication.user.id})}}">{{ publication.user.pseudo }}</td>
+                <td><a href= "{{path('app_profile_show', {id:publication.user.id})}}">{{ publication.user.pseudo }}</td>
             </tr>
             <tr>
                 <th>Posté le </th>
@@ -33,7 +33,7 @@
                 <th>ImageFile</th>
                 <td>
                     {% if vich_uploader_asset(publication, 'imageFile') %}
-                    <img src="{{ vich_uploader_asset(publication, 'imageFile') }}">
+                    <img loading="lazy" src="{{ vich_uploader_asset(publication, 'imageFile') }}">
                     {% endif %}
                 </td>
             <tr>
@@ -58,16 +58,26 @@
     <a href="{{ path('app_publication_edit', {'id': publication.id}) }}">edit</a>
             
     <h2>Commentaires</h2>
-    <table class="table">
-        {% for commentaire in publication.commentaires %}
-            <tr>
-                <th><a href= "{{path('app_user_show', {id:publication.user.id})}}">{{commentaire.user.pseudo}}</th>
-                <td>
-                <a href= "{{path('app_commentaire_show', {id:commentaire.id})}}">
-                {{commentaire.contenu}}{% if not loop.last %}<br>{% endif %}
-                {% endfor %}
-                </td>
-            </tr>
+    {% for commentaire in publication.commentaires %}
+            <table class="table">
+                <tr>
+                    <th><a href= "{{path('app_profile_show', {id:publication.user.id})}}">{{commentaire.user.pseudo}}</th>
+                    <td>
+                    {{commentaire.contenu}}{% if not loop.last %}<br>{% endif %}
+                    </td>
+                    <td>
+                        {% if vich_uploader_asset(publication, 'imageFile') %}
+                        <img loading="lazy" src="{{ vich_uploader_asset(publication, 'imageFile') }}">
+                        {% endif %}
+                    </td>
+                </tr>
+        </table>
+    {% endfor %}
+    <a href="{{ path('app_commentaire_new') }}">Nouveau commentaire</a>
+ 
+
+    
+    
 
 
     

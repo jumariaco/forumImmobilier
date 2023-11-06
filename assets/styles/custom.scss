@@ -1,0 +1,22 @@
+@import "bootstrap/scss/bootstrap";
+
+//code de customisation
+
+$light : #FFFFFF;
+$primary: #1D3164;
+$secondary: #27CB8B;
+$tertiary: #1B8B5F;
+
+
+$theme-colors: (
+  "primary":    $primary,
+  "secondary":  $secondary,
+  "tertiary":   $tertiary,
+  "success":    $success,
+  "info":       $info,
+  "warning":    $warning,
+  "danger":     $danger,
+  "light":      $light,
+  "dark":       $dark
+);
+

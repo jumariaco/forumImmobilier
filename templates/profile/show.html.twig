@@ -3,56 +3,116 @@
 {% block title %}User{% endblock %}
 
 {% block body %}
-    <h1>User</h1>
+       <h1>{% if 'ROLE_PARTENAIRE' in user.roles %}Partenaire {% endif %}
+        {% if 'ROLE_MEMBRE' in user.roles %}Membre {% endif %}
+        {% if 'ROLE_ADMIN' in user.roles %}Admin {% endif %} : {{ user.Pseudo }}</h1>
 
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
+                <th>Nom Prénom</th>
+                <td>{% if 'ROLE_MEMBRE' in user.roles %}
+                        {% if user.membre.prenom and user.membre.nom is not empty %}
+                            {{user.membre.prenom}} {{user.membre.nom}}
+                        {% endif %}{% endif %}
+
+                
+                    {% if 'ROLE_PARTENAIRE' in user.roles %}
+                        {% if user.partenaire.prenom and user.partenaire.nom is not empty %}
+                            {{user.partenaire.prenom}} {{user.partenaire.nom}}
+                        {% endif %}{% endif %}
+                </td>
             </tr>
+            {% if 'ROLE_PARTENAIRE' in user.roles %}
+                <tr>
+                    <th>Société</th>
+                    <td>{{ user.partenaire.societe }}</td>
+                </tr>
+            {% endif %}
+            {% if 'ROLE_MEMBRE' in user.roles %}
+                {% if user.membre.metier is not empty %}
+                <tr>
+                    <th>Métier</th>
+                    <td>{{ user.membre.metier }}</td>
+                </tr>
+                {% endif %}
+            {% endif %}
+            {% if 'ROLE_PARTENAIRE' in user.roles %}
+                {% if user.partenaire.metier is not empty %}
+                <tr>
+                    <th>Métier</th>
+                    <td>{{ user.partenaire.metier }}</td>
+                </tr>
+                {% endif %}
+            {% endif %}
             <tr>
                 <th>Email</th>
                 <td>{{ user.email }}</td>
             </tr>
-            <tr>
-                <th>Roles</th>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-            </tr>
-            <tr>
-                <th>Password</th>
-                <td>{{ user.password }}</td>
-            </tr>
-            <tr>
-                <th>Pseudo</th>
-                <td>{{ user.Pseudo }}</td>
-            </tr>
-            <tr>
-                <th>Actif</th>
-                <td>{{ user.actif ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>AcceptationCgu</th>
-                <td>{{ user.acceptationCgu ? 'Yes' : 'No' }}</td>
-            </tr>
+            
             <tr>
                 <th>Newsletter</th>
                 <td>{{ user.newsletter ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
-                <th>CreatedAt</th>
-                <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>DeletedAt</th>
-                <td>{{ user.deletedAt ? user.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
+                <th>AcceptationCgu</th>
+                <td>{{ user.acceptationCgu ? 'Yes' : 'No' }}</td>
+            </tr>       
         </tbody>
     </table>
+<h2> Publications : </h2>
+    <div class="grillePublications">
+        {% if user.publications is not empty %}
+            {% for publication in user.publications %}
+                <article class="publication">
+                    <h3>{{ publication.titre }}</a></h3>
+                    <p>{{ publication.contenu|u.truncate(100, '...')|raw }}<a href="{{ path('app_publication_show', {'id': publication.id}) }}"> Lire plus</a></p>
+                    <p> {% if vich_uploader_asset(publication, 'imageFile') is not empty %}
+                            <img src="{{ vich_uploader_asset(publication, 'imageFile') | imagine_filter('miniature') }}" alt="{{ publication.imageName }}">
+                        {% endif %}
+                    </p>
+                    <p>{{ publication.createdAt ? publication.createdAt|date('Y-m-d ') : '' }}Commentaires : {{ publication.commentaires|length }}</p>
+                    {% for domaine in publication.domaines %}
+                        <button>{{ domaine.nom }}</button>
+                    {% endfor %}
+                </article>  
+            {% endfor %}
+        {% else %}
+            <p>Aucune publication</p>
+        {% endif %}
+    </div>
+<h2> Commentaires : </h2>
+Nombre de commentaires : {{ user.commentaires|length }} dont 
+{% for commentaire in user.commentaires %}
+    {% if commentaire.choixRetenu %} dont {{commentaire.choixRetenu|length}}
+    {% endif %}{% endfor %} générant la meilleure solution
+
+    <div class="grillePublications">
+        {% if user.commentaires is not empty %}
+            {% for commentaire in user.commentaires %}
+                {% if commentaire.choixRetenu %}
+                    <article class="publication">
+                        <h3>{{ commentaire.publication.titre }}</a></h3>
+                        <p>{{ commentaire.contenu|u.truncate(100, '...')|raw }}<a href="{{ path('app_publication_show', {'id': commentaire.publication.id}) }}"> Lire plus</a></p>
+                        <p>{{ commentaire.createdAt ? commentaire.createdAt|date('Y-m-d ') : '' }}</p>
+                        <button>Elu meilleur commentaire </button>
+                    </article>   
+                {% endif %}
+            {% endfor %}
+            {% for commentaire in user.commentaires %}
+                {% if not commentaire.choixRetenu %}
+                    <article class="publication">
+                        <h3>{{ commentaire.publication.titre }}</a></h3>
+                        <p>{{ commentaire.contenu|u.truncate(100, '...')|raw }}<a href="{{ path('app_publication_show', {'id': commentaire.publication.id}) }}"> Lire plus</a></p>
+                        <p>{{ commentaire.createdAt ? commentaire.createdAt|date('Y-m-d ') : '' }}</p>
+                    </article>   
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p>Aucun commentaire</p>
+        {% endif %}
+    </div>
+
 
     <a href="{{ path('app_profile_index') }}">back to list</a>
 

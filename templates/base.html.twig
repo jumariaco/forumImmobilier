@@ -48,19 +48,14 @@
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{path ('app_article_index')}}">Articles</a>
                                         </li>
-                                        {# <li class="nav-item">
+                                        <li class="nav-item">
                                             <a class="nav-link" href="{{path ('app_domaine_index')}}">Domaines</a>
-                                        </li> #}
+                                        </li>
                                     {% if app.user %}
                                     
                                         {% if is_granted('ROLE_ADMIN') %}
                                         {# onglets ADMIN #}
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{path ('app_admin_publication_index')}}"> Publications</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{path ('app_admin_article_index')}}">Articles</a>
-                                        </li>
+                                        
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{path ('app_admin_domaine_index')}}">Domaines</a>
                                         </li>

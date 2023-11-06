@@ -266,7 +266,7 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
             $password=$this->hasher->hashPassword($user, '123');
             $user->setPassword($password);
             $user->setPseudo($data['pseudo']);
-            $user->setRoles($data['roles']);
+            $user->setRoles(['ROLE_PARTENAIRE']);
             $user->setActif($data['actif']);
             $user->setAcceptationCgu($data['acceptationCgu']);
             $user->setNewsletter($data['newsletter']);

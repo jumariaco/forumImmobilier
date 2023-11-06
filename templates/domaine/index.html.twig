@@ -25,8 +25,8 @@
                 <td>{{ domaine.updatedAt ? domaine.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ domaine.deletedAt ? domaine.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_admin_domaine_show', {'id': domaine.id}) }}">show</a>
-                    <a href="{{ path('app_admin_domaine_edit', {'id': domaine.id}) }}">edit</a>
+                    <a href="{{ path('app_domaine_show', {'id': domaine.id}) }}">show</a>
+                    <a href="{{ path('app_domaine_edit', {'id': domaine.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -37,5 +37,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_admin_domaine_new') }}">Create new</a>
+    <a href="{{ path('app_domaine_new') }}">Create new</a>
 {% endblock %}

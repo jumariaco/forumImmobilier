@@ -22,8 +22,29 @@ class PartenaireType extends AbstractType
             ->add('telephone', ['purify_html' => true])
             ->add('emailContact', ['purify_html' => true])
             ->add('departement')
-            ->add('titre')
-            ->add('domaines')
+            ->add('domaines', EntityType::class, [
+                'class' => Domaine::class,
+                'choice_label' => 'nom',
+                'multiple' => true,
+                'expanded' => true,
+                'attr' => [
+                    'class' => 'form-scrollable-checkboxes',
+                ],
+                'by_reference' => false,
+                'query_builder' => function ($er) {
+                    return $er->createQueryBuilder('d')
+                        ->orderBy('d.nom', 'ASC');
+                }
+            ])
+            ->add('titre', EntityType::class, [
+                'class' => Titre::class,
+                'choice_label' => 'nom',
+                'query_builder' => function ($er) {
+                    return $er->createQueryBuilder('t')
+                        ->orderBy('t.nom', 'ASC');
+                }
+            ])
+            ->add ('user')
         ;
     }
 

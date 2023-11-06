@@ -2,8 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Domaine;
 use App\Entity\Membre;
-use App\Entity\Partenaire;
+use App\Entity\Titre;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -11,30 +12,27 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserType extends AbstractType
+class MembreProfileType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('Pseudo', ['purify_html' => true])
-            ->add('email', ['purify_html' => true])
+            ->add('email')
             ->add('roles')
             ->add('actif')
-            ->add ('membre', MembreType::class)
-            ->add ('partenaire', PartenaireType::class)
-            // ->add('partenaire')
-            // ->add('membre')
-            // ->add('abonnement')
-            // ->add('abonnes')
+            ->add('abonnement')
+            ->add('abonnes')
             ->add('acceptationCgu')
             ->add('newsletter')
+            ->add ('membre', MembreType::class)
+
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => Membre::class,
         ]);
     }
 }

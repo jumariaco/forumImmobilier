@@ -15,14 +15,14 @@
                     <tbody>
                         <tr>
                             <th>Auteur</th>
-                            <td><a href= "{{path('app_admin_user_show', {id:publication.user.id})}}">{{ publication.user.pseudo }}</td>
+                            <td><a href= "{{path('app_profile_show', {id:publication.user.id})}}">{{ publication.user.pseudo }}</td>
                             <th>Posté le </th>
                             <td>{{ publication.createdAt ? publication.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                         </tr>
                         <tr>
                             <th>Domaines</th>
                             <td>{% for domaine in publication.domaines %}
-                            <a href= "{{path('app_admin_domaine_show', {id:domaine.id})}}">{{domaine.nom}}{% if not loop.last %},{% endif %}
+                            <a href= "{{path('app_domaine_show', {id:domaine.id})}}">{{domaine.nom}}{% if not loop.last %},{% endif %}
                             {% endfor %}
                             </td>
                         </tr>
@@ -34,7 +34,7 @@
                             <th>ImageFile</th>
                             <td>
                                 {% if vich_uploader_asset(publication, 'imageFile') %}
-                                <img src="{{ vich_uploader_asset(publication, 'imageFile') }}">
+                                <img loading = "lazy" src="{{ vich_uploader_asset(publication, 'imageFile') }}">
                                 {% endif %}
                             </td>
                         </tr>

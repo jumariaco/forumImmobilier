@@ -12,22 +12,13 @@
   {# Affichez les résultats si le formulaire est soumis #}
     {% if app.request.query.has('keyword') %}
         {# Traitez la recherche et affichez les résultats ici #}
+        <h2>Résultats : </h2><br/>
         {% if results is empty %}
             <ul>
-                <h2>Résultats : </h2><br/>
                 <p>Aucun résultat trouvé.</p>
             </ul>
         {% else %}
-            <ul>
-                <h2>Résultats : </h2><br/>
-                {% for user in results %}
-                    {% if user.pseudo is defined %}
-                    <li>
-                        {{user.pseudo}}
-                        <a href= "{{path('app_admin_user_show', {id:user.id})}}">{{ user.pseudo }}</a>
-                    </li>
-                    {% endif %}
-                {% endfor %}
+            <ul>               
                 {% for publication in results %}
                     {% if publication.contenu or publication.titre is defined %}
                         <h2>{{ publication.titre }}</h2>
@@ -42,7 +33,7 @@
                             <tr>
                                 <th>Domaines</th>
                                 <td>{% for domaine in publication.domaines %}
-                                <a href= "{{path('app_admin_domaine_show', {id:domaine.id})}}">{{domaine.nom}}{% if not loop.last %},{% endif %}
+                                <a href= "{{path('app_domaine_show', {id:domaine.id})}}">{{domaine.nom}}{% if not loop.last %},{% endif %}
                                 {% endfor %}
                                 </td>
                             </tr>

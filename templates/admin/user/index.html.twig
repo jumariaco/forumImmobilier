@@ -1,20 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User index{% endblock %}
+{% block title %}Utilisateurs{% endblock %}
 
 {% block body %}
-    <h1>User index</h1>
+    <h1>Liste des utilisateurs</h1>
 
+    <a href="{{ path('app_admin_user_new_admin') }}">Créer un nouvel administrateur    </a>  
+    <a href="{{ path('app_admin_user_new_partenaire') }}">Créer un nouveau partenaire </a> 
+    <a href="{{ path('app_admin_user_new_membre') }}">Créer un nouveau membre </a>
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Pseudo</th>
                 <th>Email</th>
                 <th>Roles</th>
-                <th>Pseudo</th>
-                <th>Actif</th>
-                <th>AcceptationCgu</th>
+                <th>Prénom Nom</th>
+                <th>Société</th>
                 <th>Newsletter</th>
+                <th>AcceptationCgu</th>
+                <th>Actif</th>
                 <th>CreatedAt</th>
                 <th>UpdatedAt</th>
                 <th>DeletedAt</th>
@@ -25,18 +30,41 @@
         {% for user in users %}
             <tr>
                 <td>{{ user.id }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
                 <td>{{ user.Pseudo }}</td>
-                <td>{{ user.actif ? 'Yes' : 'No' }}</td>
-                <td>{{ user.acceptationCgu ? 'Yes' : 'No' }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                        {% if 'ROLE_PARTENAIRE' in user.roles %}Partenaire {% endif %}
+                        {% if 'ROLE_MEMBRE' in user.roles %}Membre {% endif %}
+                        {% if 'ROLE_ADMIN' in user.roles %}Admin {% endif %}
+                </td>
+                <td>
+                {% if 'ROLE_MEMBRE' in user.roles %}
+                        {% if user.membre.prenom and user.membre.nom is not empty %}
+                            {{user.membre.prenom}} {{user.membre.nom}}
+                        {% endif %}{% endif %}
+
+                
+                    {% if 'ROLE_PARTENAIRE' in user.roles %}
+                        {% if user.partenaire.prenom and user.partenaire.nom is not empty %}
+                            {{user.partenaire.prenom}} {{user.partenaire.nom  }}
+                        {% endif %}{% endif %}
+                </td>
+                <td>{% if 'ROLE_PARTENAIRE' in user.roles %}
+                    {{ user.partenaire.societe }}({{user.partenaire.metier}})
+                {% endif %}
+                
+                </td>
+                
                 <td>{{ user.newsletter ? 'Yes' : 'No' }}</td>
+                <td>{{ user.acceptationCgu ? 'Yes' : 'No' }}</td>
+                <td>{{ user.actif ? 'Yes' : 'No' }}</td>
                 <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ user.deletedAt ? user.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('app_admin_user_show', {'id': user.id}) }}">show</a>
                     <a href="{{ path('app_admin_user_edit', {'id': user.id}) }}">edit</a>
+                    <a href="{{ path('app_admin_user_password', {'id': user.id}) }}">password</a>
                 </td>
             </tr>
         {% else %}
@@ -47,5 +75,4 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_admin_user_new') }}">Create new</a>
 {% endblock %}

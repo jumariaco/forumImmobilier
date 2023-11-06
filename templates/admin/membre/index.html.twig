@@ -9,9 +9,13 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Titre</th>
                 <th>Nom</th>
                 <th>Prenom</th>
+                <th>Email</th>
                 <th>Metier</th>
+                <th>Roles</th>
+                <th>Actif</th>
                 <th>CreatedAt</th>
                 <th>UpdatedAt</th>
                 <th>DeletedAt</th>
@@ -22,6 +26,7 @@
         {% for membre in membres %}
             <tr>
                 <td>{{ membre.id }}</td>
+                <td>{{ membre.titre.nom }}</td>
                 <td>{{ membre.nom }}</td>
                 <td>{{ membre.prenom }}</td>
                 <td>{{ membre.metier }}</td>

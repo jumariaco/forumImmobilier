@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Form\MembreProfileType;
+use App\Form\PartenaireProfileType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +28,12 @@ class ProfileController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
-        $form = $this->createForm(User1Type::class, $user);
+        if(in_array('ROLE_PARTENAIRE', $user->getRoles())){
+            $form=$this->createForm(PartenaireProfileType::class, $user);
+        }if(in_array('ROLE_MEMBRE', $user->getRoles())){
+            $form=$this->createForm(MembreProfileType::class, $user);
+        }
+        // $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -53,7 +60,12 @@ class ProfileController extends AbstractController
     #[Route('/{id}/edit', name: 'app_profile_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(User1Type::class, $user);
+        if(in_array('ROLE_PARTENAIRE', $user->getRoles())){
+            $form=$this->createForm(PartenaireProfileType::class, $user);
+        }if(in_array('ROLE_MEMBRE', $user->getRoles())){
+            $form=$this->createForm(MembreProfileType::class, $user);
+        }
+        // $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -1,8 +1,18 @@
-
+@import "custom.scss";
 body {
-    background-color: #1D3164;
+    background-color: $light;
 }
 
+// sur tout le site retire les border et padding et margin
+form {
+    fieldset{
+        border:none;
+        padding:0;
+        margin:0;
+    }
+  }
+
+//   choix multiples avec barre de scroll
 .form_scrollable-checkboxes {
     display: flex;
     flex-direction: column;
@@ -12,5 +22,65 @@ body {
     background-color: white;
     input {
         float: left;
+    }
+}
+
+// gérer navbar sur toute la largeur
+// .container{
+//     width: 100%;
+//     margin : auto;
+// }
+
+.navbar-brand {
+    color: $light;
+
+}
+.nav-link{
+    color: $light;
+}
+
+.container-fluid {
+    background-color: $primary;
+    color: white;
+    text-decoration: none;
+}
+
+button{
+    background: linear-gradient($tertiary, $secondary);
+    color: $light !important;
+    border: 1px $secondary solid;
+    border-radius: 8px;
+}
+button:hover{
+    background : $secondary;
+}
+
+// CSS DES PUBLICATIONS ET ARTICLES
+.grillePublications{
+    display:flex;
+    flex-wrap : wrap;
+    justify-content: center;
+    align-items : center;
+}
+
+.publication{
+    background-color: $primary;
+    flex-basis : 30%;
+    flex-grow:1;
+    flex-shrink: 1;
+    padding:20px;
+    margin:10px;
+    border : 4px solid $secondary;
+    color: $light;
+    border-radius: 30px;
+    text-align: center;
+}
+@media screen and (max-width: 768px) {
+    .grillePublications {
+        flex-direction: column;
+    }
+
+    article {
+        flex-basis: 100%;
     }
 }
