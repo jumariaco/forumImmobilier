@@ -25,16 +25,23 @@ form {
     }
 }
 
-// gérer navbar sur toute la largeur
-// .container{
-//     width: 100%;
-//     margin : auto;
+// -------------------NAVBAR-------------------
+// body{
+//     display:flex;
 // }
 
+.navbar{
+    display:flex;
+    position : fixed;
+    width : 100%;
+    z-index:6;
+}
+// couleur écriture logo
 .navbar-brand {
     color: $light;
 
 }
+// couleur liens
 .nav-link{
     color: $light;
 }
@@ -44,18 +51,19 @@ form {
     color: white;
     text-decoration: none;
 }
-
+// -----------------fin navbar-----------------
 button{
     background: linear-gradient($tertiary, $secondary);
     color: $light !important;
     border: 1px $secondary solid;
     border-radius: 8px;
+    
 }
 button:hover{
     background : $secondary;
 }
 
-// CSS DES PUBLICATIONS ET ARTICLES
+//-----------------------PUBLICATIONS ET ARTICLES-----------------
 .grillePublications{
     display:flex;
     flex-wrap : wrap;
@@ -75,6 +83,34 @@ button:hover{
     border-radius: 30px;
     text-align: center;
 }
+
+.alert {
+    background-color: $tertiary;
+    color: $light;
+    border: 2px solid $secondary;
+    border-radius: 10px;
+}
+
+// partage de publication sur réseaux sociaux
+.partage{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction:row;
+    
+}
+// -------------------FIN PUBLICATIONS ET ARTICLES-----------------
+
+// ---------------------COMMENTAIRES---------------------
+.enfant {
+    margin-left : 60px;
+}
+
+.petitenfant {
+    margin-left : 120px;
+}
+// -------------------FIN COMMENTAIRES---------------------
+
 @media screen and (max-width: 768px) {
     .grillePublications {
         flex-direction: column;
