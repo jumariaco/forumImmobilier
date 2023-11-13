@@ -1,0 +1,47 @@
+{% for commentaire in publication.commentaires %}
+            {% if commentaire.parent == null %}
+                <table class="table">
+                
+                    <tr>
+                        <td><a href= "{{path('app_profile_show', {id:commentaire.user.id})}}"><b>{{commentaire.user.pseudo}}</b></a>  le {{commentaire.createdAt ? commentaire.createdAt|date('d-m-Y') : '' }}</td>
+                        {#  data-reply permet un écouteur d'évènements en JS qui saura qu'on a cliqué sur un bouton "répondre #}
+                    {# data-id contiendra le numéro du commentaire id sur lequel on répond #}
+                        <td><button><a href="#" data-reply data-id="{{commentaire.id}}">Repondre</a></button></td>
+                    </tr>
+                    
+                    <tr>
+                    <td>
+                        {{ commentaire.contenu|raw }}{% if not loop.last %}<br>{% endif %}
+                    </td>
+                    <td>
+                        {% if vich_uploader_asset(commentaire, 'imageFile') %}
+                            <img loading="lazy" src="{{ vich_uploader_asset(commentaire, 'imageFile') }}">
+                        {% endif %}
+                    </td>
+                        
+                        
+                    </tr>
+                    {# on affiche les réponses, s'il y en a, du commentaire parent #}
+                    {% for enfant in commentaire.enfants %}
+                        <table  class="enfant">
+                            <tr>
+                                <td><a href= "{{path('app_profile_show', {id:enfant.user.id})}}"><b>{{enfant.user.pseudo}}</b></a>  le {{enfant.createdAt ? enfant.createdAt|date('d-m-Y') : '' }}</td>
+                                <td><button><a href="#" data-reply data-id="{{enfant.id}}">Repondre</a></button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{enfant.contenu|raw}}{% if not loop.last %}<br>{% endif %}
+                                </td>
+                                <td>
+                                    {% if vich_uploader_asset(enfant, 'imageFile') %}
+                                    <img loading="lazy" src="{{ vich_uploader_asset(enfant, 'imageFile') }}">
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    {% endfor %}
+                    
+                    
+                </table>
+            {% endif %}
+        {% endfor %}

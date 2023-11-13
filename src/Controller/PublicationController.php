@@ -101,18 +101,31 @@ class PublicationController extends AbstractController
     //     ]);
     // }
 
-    #[Route('/{id}', name: 'app_publication_show', methods: ['GET', 'POST'])]
+
+    // TEST POUR COMMENTAIRES IMBRIQUES
+     #[Route('/{id}', name: 'app_publication_show', methods: ['GET', 'POST'])]
     public function show(Publication $publication, Request $request, EntityManagerInterface $em): Response
     {
         $commentaire = new Commentaire();
         $commentaire->setPublication($publication);
+
         if($this->getUser()){
             $commentaire->setUser($this->getUser());
         }
+
         $form = $this->createForm(CommentaireType::class, $commentaire);
-        $form->handleRequest($request);
+        
+        $form->handleRequest($request);      
+        
+        
         
         if ($form->isSubmitted() && $form->isValid()) {
+            $parentCommentId = $request->request->get('commentaire')['parent']; // récupère l'id du parent
+        if ($parentCommentId) {
+            $parentComment = $em->getRepository(Commentaire::class)->find($parentCommentId);
+            $commentaire->setParent($parentComment);
+        }
+        
             $em->persist($commentaire);
             $em->flush();
 
@@ -127,6 +140,34 @@ class PublicationController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    // BON BON BON BON OK
+    // #[Route('/{id}', name: 'app_publication_show', methods: ['GET', 'POST'])]
+    // public function show(Publication $publication, Request $request, EntityManagerInterface $em): Response
+    // {
+    //     $commentaire = new Commentaire();
+    //     $commentaire->setPublication($publication);
+    //     if($this->getUser()){
+    //         $commentaire->setUser($this->getUser());
+    //     }
+    //     $form = $this->createForm(CommentaireType::class, $commentaire);
+    //     $form->handleRequest($request);
+        
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $em->persist($commentaire);
+    //         $em->flush();
+
+    //         $this->addFlash('success', 'Votre commentaire a bien été ajouté');
+           
+    //         return $this->redirectToRoute('app_publication_show', ['id' => $publication->getId()]);
+    //     }
+
+
+    //     return $this->render('publication/show.html.twig', [
+    //         'publication' => $publication,
+    //         'form' => $form->createView(),
+    //     ]);
+    // }
 
     #[Route('/{id}/edit', name: 'app_publication_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Publication $publication, EntityManagerInterface $entityManager): Response
