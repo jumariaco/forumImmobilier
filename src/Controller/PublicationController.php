@@ -8,9 +8,6 @@ use App\Form\PublicationType;
 use App\Form\CommentaireType;
 use App\Repository\PublicationRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Vich\UploaderBundle\Form\Type\VichImageType;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,57 +49,8 @@ class PublicationController extends AbstractController
         ]);
     }
 
-    // #[Route('/{id}', name: 'app_publication_show', methods: ['GET', 'POST'])]
-    // public function show(Publication $publication, Request $request): Response
-    // {
 
-    //     // partie Commentaires
-    //     // On crée l'objet "Commentaire" vierge
-    //     $commentaire = new Commentaire();
-
-    //     // on génère le formulaire
-    //     $commentaireForm = $this->createForm(CommentaireType::class, $commentaire);
-    //     $commentaireForm->handleRequest($request);
-
-    //     // Traitement du formulaire
-    //     if ($commentaireForm->isSubmitted() && $commentaireForm->isValid()) {
-    //         $commentaire->setCreatedAt(new \DateTime());
-    //         $commentaire->setPublication($publication);
-
-    //         // On récupère le contenu du champ parentid
-    //         $parentid = $commentaireForm->get('parentid')->getData();
-
-    //         // On ajoute l'utilisateur connecté à l'entité Commentaire
-    //         $commentaire->setUser($this->getUser());
-
-    //         // On va chercher le commentaire correspondant
-    //         $entityManager = $this->getDoctrine()->getManager();
-
-    //         if($parentid != null) {
-    //             $parent = $entityManager->getRepository(Commentaire::class)->find($parentid);
-    //             // on définit le parent
-    //             $commentaire->setParent($parent);
-    //         } else {
-    //             $commentaire->setParent(null);
-    //         }
-            
-    //         $this->entityManager->persist($commentaire);
-    //         $this->entityManager->flush();
-
-    //         $this->addFlash('success', 'Commentaire ajouté');
-    //         return $this->redirectToRoute('app_publication_show', ['id' => $publication->getId()]);
-    //         // return $this->redirectToRoute('publication', ['slug' => $publication->getSlug()]);
-    //     }
-
-
-    //     return $this->render('publication/show.html.twig', [
-    //         'publication' => $publication,
-    //         'commentaireForm' => $commentaireForm->createView(),
-    //     ]);
-    // }
-
-
-    // TEST POUR COMMENTAIRES IMBRIQUES
+    // PUBLICATION AVEC COMMENTAIRES IMBRIQUES
      #[Route('/{id}', name: 'app_publication_show', methods: ['GET', 'POST'])]
     public function show(Publication $publication, Request $request, EntityManagerInterface $em): Response
     {
@@ -118,14 +66,20 @@ class PublicationController extends AbstractController
         $form->handleRequest($request);      
         
         
-        
         if ($form->isSubmitted() && $form->isValid()) {
             $parentCommentId = $request->request->get('commentaire')['parent']; // récupère l'id du parent
+            $enfantCommentId = $request->request->get('commentaire')['enfant']; // récupère l'id de l'enfant(parent) pour le petit-enfant
         if ($parentCommentId) {
             $parentComment = $em->getRepository(Commentaire::class)->find($parentCommentId);
             $commentaire->setParent($parentComment);
+            }
+        if ($enfantCommentId) {
+            $enfantComment = $em->getRepository(Commentaire::class)->find($enfantCommentId);
+            $commentaire->setEnfant($enfantComment);
         }
-        
+      
+
+
             $em->persist($commentaire);
             $em->flush();
 
@@ -141,33 +95,7 @@ class PublicationController extends AbstractController
         ]);
     }
 
-    // BON BON BON BON OK
-    // #[Route('/{id}', name: 'app_publication_show', methods: ['GET', 'POST'])]
-    // public function show(Publication $publication, Request $request, EntityManagerInterface $em): Response
-    // {
-    //     $commentaire = new Commentaire();
-    //     $commentaire->setPublication($publication);
-    //     if($this->getUser()){
-    //         $commentaire->setUser($this->getUser());
-    //     }
-    //     $form = $this->createForm(CommentaireType::class, $commentaire);
-    //     $form->handleRequest($request);
-        
-    //     if ($form->isSubmitted() && $form->isValid()) {
-    //         $em->persist($commentaire);
-    //         $em->flush();
-
-    //         $this->addFlash('success', 'Votre commentaire a bien été ajouté');
-           
-    //         return $this->redirectToRoute('app_publication_show', ['id' => $publication->getId()]);
-    //     }
-
-
-    //     return $this->render('publication/show.html.twig', [
-    //         'publication' => $publication,
-    //         'form' => $form->createView(),
-    //     ]);
-    // }
+   
 
     #[Route('/{id}/edit', name: 'app_publication_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Publication $publication, EntityManagerInterface $entityManager): Response

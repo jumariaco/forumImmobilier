@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Publication;
+use App\Entity\Commentaire;
 use App\Form\ArticleType;
+use App\Form\CommentaireType;
 use App\Repository\PublicationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -42,12 +44,47 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_article_show', methods: ['GET'])]
-    public function show(Publication $publication): Response
+    #[Route('/{id}', name: 'app_article_show', methods: ['GET', 'POST'])]
+    public function show(Publication $publication, Request $request, EntityManagerInterface $em): Response
     {
-        return $this->render('article/show.html.twig', [
+        $commentaire = new Commentaire();
+        $commentaire->setPublication($publication);
+
+        if($this->getUser()){
+            $commentaire->setUser($this->getUser());
+        }
+
+        $form = $this->createForm(CommentaireType::class, $commentaire);
+        
+        $form->handleRequest($request);      
+        
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $parentCommentId = $request->request->get('commentaire')['parent']; // récupère l'id du parent
+            $enfantCommentId = $request->request->get('commentaire')['enfant']; // récupère l'id de l'enfant(parent) pour le petit-enfant
+        if ($parentCommentId) {
+            $parentComment = $em->getRepository(Commentaire::class)->find($parentCommentId);
+            $commentaire->setParent($parentComment);
+            }
+        if ($enfantCommentId) {
+            $enfantComment = $em->getRepository(Commentaire::class)->find($enfantCommentId);
+            $commentaire->setEnfant($enfantComment);
+        }
+
+            $em->persist($commentaire);
+            $em->flush();
+
+            $this->addFlash('success', 'Votre commentaire a bien été ajouté');
+           
+            return $this->redirectToRoute('app_publication_show', ['id' => $publication->getId()]);
+        }
+
+
+        return $this->render('publication/show.html.twig', [
             'publication' => $publication,
+            'form' => $form->createView(),
         ]);
+        
     }
 
     #[Route('/{id}/edit', name: 'app_article_edit', methods: ['GET', 'POST'])]

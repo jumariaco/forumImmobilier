@@ -28,6 +28,7 @@ class Commentaire
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank()]
     private ?string $contenu = null;
 
     #[ORM\Column(nullable: true)]
@@ -50,11 +51,28 @@ class Commentaire
     #[ORM\Column(length: 190, nullable: true)]
     private ?string $typeMime = null;
 
-    #[ORM\ManyToOne(inversedBy: 'commentaires')]
+    #[ORM\ManyToOne(inversedBy: 'enfants')]
+    private ?Commentaire $parent = null;
+
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
+    private Collection $enfants;
+
+    // test
+    #[ORM\ManyToOne(inversedBy: 'petitenfants')]
+    private ?Commentaire $enfant = null;
+
+    #[ORM\OneToMany(mappedBy: 'enfant', targetEntity: self::class)]
+    private Collection $petitenfants;
+
+    // fin test
+
+    #[ORM\ManyToOne(inversedBy: 'commentaires', targetEntity: Publication::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Publication $publication = null;
 
 
-    #[ORM\ManyToOne(inversedBy: 'commentaires')]
+    #[ORM\ManyToOne(inversedBy: 'commentaires', targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
     #[ORM\OneToMany(mappedBy: 'commentaire', targetEntity: Like::class)]
@@ -63,6 +81,7 @@ class Commentaire
     public function __construct()
     {
         $this->likes = new ArrayCollection();
+        $this->enfants = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -209,8 +228,86 @@ class Commentaire
         return $this;
     }
 
-    // public function __toString()
-    // {
-    //     return $this->contenu;
-    // }
+    public function getParent(): ?self
+    {
+        return $this->parent;
+    }
+
+    public function setParent(?self $parent): self
+    {
+        $this->parent = $parent;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     * */
+    public function getEnfants(): Collection
+    {
+        return $this->enfants;
+    }
+
+    // test
+    public function setEnfant(?self $enfant): self
+    {
+        $this->enfant = $enfant;
+        return $this;
+    }
+    // fin test
+    public function addEnfant(self $enfant): self
+    {
+        if (!$this->enfants->contains($enfant)) {
+            $this->enfants[] = $enfant;
+            $enfant->setParent($this);
+        }
+        return $this;
+    }
+
+    public function removeEnfant(self $enfant): self
+    {
+        if ($this->enfants->removeElement($enfant)) {
+            // set the owning side to null (unless already changed)
+            if ($enfant->getParent() === $this) {
+                $enfant->setParent(null);
+            }
+        }
+        return $this;
+    }
+
+
+    // test
+    /**
+     * @return Collection<int, self>
+     * */
+    public function getPetitenfants(): Collection
+    {
+        return $this->petitenfants;
+    }
+
+    
+    public function addPetitenfant(self $petitenfant): self
+    {
+        if (!$this->petitenfants->contains($petitenfant)) {
+            $this->petitenfants[] = $petitenfant;
+            $petitenfant->setEnfant($this);
+        }
+        return $this;
+    }
+
+    public function removePetitenfant(self $petitenfant): self
+    {
+        if ($this->petitenfants->removeElement($petitenfant)) {
+            // set the owning side to null (unless already changed)
+            if ($petitenfant->getEnfant() === $this) {
+                $petitenfant->setEnfant(null);
+            }
+        }
+        return $this;
+    }
+    // fin test
+
+    public function __toString()
+    {
+        return $this->contenu;
+    }
 }

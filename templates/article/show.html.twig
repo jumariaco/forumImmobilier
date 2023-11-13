@@ -9,7 +9,7 @@
         <tbody>
             <tr>
                 <th>Auteur</th>
-                <td><a href= "{{path('app_user_show', {id:publication.user.id})}}">{{ publication.user.pseudo }}</td>
+                <td><a href= "{{path('app_profile_show', {id:publication.user.id})}}">{{ publication.user.pseudo }}</td>
             </tr>
             <tr>
                 <th>Posté le </th>
@@ -39,18 +39,11 @@
        
 <a href="{{ path('app_article_index') }}">Retour à la liste</a>
             
-    <h2>Commentaires</h2>
-    <table class="table">
-        {% for commentaire in publication.commentaires %}
-            <tr>
-                <th><a href= "{{path('app_user_show', {id:publication.user.id})}}">{{commentaire.user.pseudo}}</th>
-                <td>
-                <a href= "{{path('app_commentaire_show', {id:commentaire.id})}}">
-                {{commentaire.contenu}}{% if not loop.last %}<br>{% endif %}
-                {% endfor %}
-                </td>
-            </tr>
+    
 
+    {% include 'components/_commentaire.html.twig' %}
+        
+       
 
     
 

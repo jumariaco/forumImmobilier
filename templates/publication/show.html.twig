@@ -64,16 +64,7 @@
 
     <a href="{{ path('app_publication_edit', {'id': publication.id}) }}">edit</a>
          
-        <h2>Commentaires</h2>
-
-        {# {{commentaire.user.id}} #}
-        {% if app.user %}
-            <div> 
-                {{ form_start(form) }}
-                {{ form_widget(form.parent) }}
-                {{ form_end(form) }}
-            </div>
-        {% endif %}
+        
         
         {% include 'components/_commentaire.html.twig' %}
         

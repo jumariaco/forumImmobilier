@@ -21,9 +21,6 @@ class CommentaireType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            // ->add('user', CheckboxType::class, [
-            //     'mapped' => false
-            // ])
             ->add('contenu', CKEditorType::class, [
                 'label' => 'Poster un nouveau commentaire : ',
                 'purify_html' => true])
@@ -35,15 +32,16 @@ class CommentaireType extends AbstractType
                 'allow_delete' => true,
                 'label' => 'Insérer une image :',
             ])
-            // ->add('publication', EntityType::class, [
-            //     'class' => Publication::class,
-            //     'choice_label' => 'titre',
-            //     'placeholder' => 'Sélectionnez la publication'
-            // ])
+          
             
-            ->add('parentid', HiddenType::class, [
+            ->add('parent', HiddenType::class, [
                 'mapped' => false
             ])
+            // test
+            ->add('enfant', HiddenType::class, [
+                'mapped' => false
+            ])
+            // fin test
             ->add ('envoyer', SubmitType::class)
         ;
     }
