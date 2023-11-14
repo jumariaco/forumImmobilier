@@ -2,10 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\User;
 use App\Entity\Domaine;
-use App\Model\SearchData;
-
 use App\Entity\Publication;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -31,19 +28,19 @@ class PublicationRepository extends ServiceEntityRepository
      * @return Publication[]
      */
     public function RecherchePublication($keyword)
-    {        
-        return $this->createQueryBuilder('p')
-            ->andwhere('p.statut LIKE :statut')
-            ->setParameter('statut', true)
-            ->addOrderBy('p.createdAt', 'DESC')
-            ->join('p.domaines', 'd')
-            ->andWhere('p.titre LIKE :keyword OR p.contenu LIKE :keyword')
-            ->orWhere('d.nom LIKE :keyword')
-            ->setParameter('keyword', '%' . $keyword . '%')
-            ->getQuery()
-            ->getResult();
-     
+    {
+    return $this->createQueryBuilder('p')
+        ->andWhere('p.statut = :statut')
+        ->setParameter('statut', true)
+        ->addOrderBy('p.createdAt', 'DESC')
+        ->leftJoin('p.domaines', 'd')
+        ->leftJoin('p.user', 'u')  //user singulier car relation Many To One
+        ->andWhere('p.titre LIKE :keyword OR p.contenu LIKE :keyword OR d.nom LIKE :keyword OR u.Pseudo LIKE :keyword')  // Attention Pseudo avec majuscule
+        ->setParameter('keyword', '%' . $keyword . '%')
+        ->getQuery()
+        ->getResult();
     }
+
 
   
 

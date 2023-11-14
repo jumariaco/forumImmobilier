@@ -12,14 +12,15 @@
   {# Affichez les résultats si le formulaire est soumis #}
     {% if app.request.query.has('keyword') %}
         {# Traitez la recherche et affichez les résultats ici #}
-        <h2>Résultats : </h2><br/>
-        {% if results is empty %}
+        <h2>Résultats des Publications et Articles: </h2><br/>
+        {# publicationResults est défini dans HOmeController, provient de la fonction de recherche dans le Repository PUblication #}
+        {% if publicationResults is empty %}
             <ul>
                 <p>Aucun résultat trouvé.</p>
             </ul>
         {% else %}
             <ul>               
-                {% for publication in results %}
+                {% for publication in publicationResults %}
                     {% if publication.contenu or publication.titre is defined %}
                         <h2>{{ publication.titre }}</h2>
                         <table class="table">
@@ -79,8 +80,100 @@
     {% endif %}
 {# ----------------------------------------------------------------------------------------------------
 ------------------------------------FIN DES RESULTATS DE LA BARRE DE RECHERCHE -----------------------
+--------------------------------------PUBLICATIONS ET ARTICLES----------------------------------------
+------------------------------------------------------------------------------------------------------ 
+
+
+
+{# ------------------------------------------------------------------------------------------------------
+------------------------------RESULTATS DE LA BARRE DE RECHERCHE PROFILS UTILISATEURS---------------
+------------------------------------------------------------------------------------------------------ #}                                 
+    {% if app.request.query.has('keyword') %}
+        {# Traitez la recherche et affichez les résultats ici #}
+        <h2>Résultats Profils Utilisateurs : </h2><br/>
+        {# userResults est défini dans HomeController, provient de la fonction de recherche dans le Repository User #}
+        {% if userResults is empty %}
+            <ul>
+                <p>Aucun résultat trouvé.</p>
+            </ul>
+        {% else %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Pseudo</th>
+                        <th>Email</th>
+                        <th>Roles</th>
+                        <th>Prénom Nom</th>
+                        <th>Société</th>
+                        <th>Actif</th>
+                        <th>AcceptationCgu</th>
+                        <th>Newsletter</th>
+                        <th>CreatedAt</th>
+                        <th>UpdatedAt</th>
+                        <th>DeletedAt</th>
+                        <th>actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in userResults %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.Pseudo }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>
+                                {% if 'ROLE_PARTENAIRE' in user.roles %}Partenaire {% endif %}
+                                {% if 'ROLE_MEMBRE' in user.roles %}Membre {% endif %}
+                                {% if 'ROLE_ADMIN' in user.roles %}Admin {% endif %}
+                            </td>
+                            <td>
+                                {% if 'ROLE_MEMBRE' in user.roles %}
+                                    {% if user.membre.prenom and user.membre.nom is not empty %}
+                                        {{user.membre.prenom}} {{user.membre.nom}}
+                                    {% endif %}
+                                {% endif %}
+
+                                {% if 'ROLE_PARTENAIRE' in user.roles %}
+                                    {% if user.partenaire.prenom and user.partenaire.nom is not empty %}
+                                        {{user.partenaire.prenom}} {{user.partenaire.nom}}
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if 'ROLE_PARTENAIRE' in user.roles %}
+                                    {{ user.partenaire.societe }}({{user.partenaire.metier}})
+                                {% endif %}
+                            </td>
+                            <td>{{ user.newsletter ? 'Yes' : 'No' }}</td>
+                            <td>{{ user.acceptationCgu ? 'Yes' : 'No' }}</td>
+                            <td>{{ user.actif ? 'Yes' : 'No' }}</td>
+                            <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                            <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                            <td>{{ user.deletedAt ? user.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+                            <td>
+                                <a href="{{ path('app_profile_show', {'id': user.id}) }}">show</a>
+                                <a href="{{ path('app_profile_edit', {'id': user.id}) }}">edit</a>
+                                <a href="{{ path('app_profile_password', {'id': user.id}) }}">password</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="12">no records found</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    {% endif %}
+
+    {# ----------------------------------------------------------------------------------------------------
+------------------------------------FIN DES RESULTATS DE LA BARRE DE RECHERCHE -----------------------
+-----------------------------------------PROFILS UTILISATEURS----------------------------------------
 ------------------------------------------------------------------------------------------------------ #}
-                                                        
+
+    {# ----------------------------------------------------------------------------------------------------
+------------------------------------FIN DES RESULTATS DE LA BARRE DE RECHERCHE -----------------------
+------------------------------------------------------------------------------------------------------ #}
 
 {% endblock %}
 
