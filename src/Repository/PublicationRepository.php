@@ -2,6 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
+use App\Entity\Domaine;
+use App\Model\SearchData;
+
 use App\Entity\Publication;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -21,17 +25,28 @@ class PublicationRepository extends ServiceEntityRepository
         parent::__construct($registry, Publication::class);
     }
 
+    
     /**
-     * @return Publication[] Returns an array of User objects
+     * Get published publications and articles thanks to Search Data Value
+     * @return Publication[]
      */
     public function RecherchePublication($keyword)
-{
-    return $this->createQueryBuilder('p')
-        ->where('p.titre LIKE :keyword OR p.contenu LIKE :keyword')
-        ->setParameter('keyword', '%' . $keyword . '%')
-        ->getQuery()
-        ->getResult();
-}
+    {        
+        return $this->createQueryBuilder('p')
+            ->andwhere('p.statut LIKE :statut')
+            ->setParameter('statut', true)
+            ->addOrderBy('p.createdAt', 'DESC')
+            ->join('p.domaines', 'd')
+            ->andWhere('p.titre LIKE :keyword OR p.contenu LIKE :keyword')
+            ->orWhere('d.nom LIKE :keyword')
+            ->setParameter('keyword', '%' . $keyword . '%')
+            ->getQuery()
+            ->getResult();
+     
+    }
+
+  
+
 //    /**
 //     * @return Publication[] Returns an array of Publication objects
 //     */
