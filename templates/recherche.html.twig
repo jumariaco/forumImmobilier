@@ -2,9 +2,15 @@
 
 {% block title %}FORUM IMMOBILIER{% endblock %}
 {% block body %}
-    <h1>Bienvenue sur le 1er forum d'expertise immobilière </h1>
-
-
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" href="#resultatspublications">Publications et articles</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="#resultatsutilisateurs">Utilisateurs</a>
+  </li>
+</ul>
+<br/><br/><br/><br/>
 {# ------------------------------------------------------------------------------------------------------
 ------------------------------RESULTATS DE LA BARRE DE RECHERCHE PUBLICATIONS ET ARTICLES---------------
 ------------------------------------------------------------------------------------------------------ #}
@@ -12,7 +18,7 @@
   {# Affichez les résultats si le formulaire est soumis #}
     {% if app.request.query.has('keyword') %}
         {# Traitez la recherche et affichez les résultats ici #}
-        <h2>Résultats des Publications et Articles: </h2><br/>
+        <h2 id="resultatspublications">Résultats des Publications et Articles: </h2><br/>
         {# publicationResults est défini dans HOmeController, provient de la fonction de recherche dans le Repository PUblication #}
         {% if publicationResults is empty %}
             <ul>
@@ -90,7 +96,7 @@
 ------------------------------------------------------------------------------------------------------ #}                                 
     {% if app.request.query.has('keyword') %}
         {# Traitez la recherche et affichez les résultats ici #}
-        <h2>Résultats Profils Utilisateurs : </h2><br/>
+        <h2 id="resultatsutilisateurs">Résultats Profils Utilisateurs : </h2><br/>
         {# userResults est défini dans HomeController, provient de la fonction de recherche dans le Repository User #}
         {% if userResults is empty %}
             <ul>

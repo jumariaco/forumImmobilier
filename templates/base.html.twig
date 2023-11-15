@@ -3,6 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
         <title>{% block title %}{% endblock %}</title>
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {#  ds les blocks ci-dessous mettre balises styles pr back ou front #}
@@ -20,11 +21,11 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-    <body>
-        {% block header %}
-        <div class="container">
+   
+    {% block header %}
+           {# <div class="container">
             <div class="row">
-                <div class="col">
+                <div class="col"> #}
                     <nav class="navbar navbar-expand-lg bg-body-tertiary">
                         <div class="container-fluid">
                         {# ci-dessous mieux mettre un path que l'url directe ds symfony = moins de risqu d'erreurs #}
@@ -35,7 +36,7 @@
                                        
                                     {# barre de recherche #}
                                     <form class="d-flex" role="search" action="{{ path('app_home_recherche') }}">
-                                        <input class="form-control me-2" type="search" name="keyword" id="searchInput" placeholder="Search" aria-label="Search" value="{{ app.request.query.get('keyword') }}">
+                                        <input class="form-control me-2" type="search" name="keyword" id="searchInput" placeholder="Rechercher une publication" aria-label="Search" value="{{ app.request.query.get('keyword') }}">
                                         <button class="btn btn-outline-success" type="submit">Search</button>
                                     </form>
                                     {# fin barre de recherche #}
@@ -43,7 +44,8 @@
                                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                         <li class="nav-item">
                                           <li class="nav-item">
-                                            <a class="nav-link" href="{{path ('app_publication_index')}}">Publications</a>
+                                            <a class="nav-link" href="{{path ('app_home')}}">Publications</a>
+                                            {# <a class="nav-link" href="{{path ('app_publication_index')}}">Publications</a> #}
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{path ('app_article_index')}}">Articles</a>
@@ -52,27 +54,30 @@
                                             <a class="nav-link" href="{{path ('app_domaine_index')}}">Domaines</a>
                                         </li>
                                     {% if app.user %}
-                                    
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{path ('app_profile_index')}}">Utilisateurs</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{path ('app_profile_show',{'id':app.user.id} )}}">Mon Profil</a>
+                                        </li>
+                                        {# <li class="nav-item">
+                                            <a class="nav-link" href="{{path ('app_publication_show',{'id':app.user.id}) }}">Mes Publications</a>
+                                        </li> #}
                                         {% if is_granted('ROLE_ADMIN') %}
-                                        {# onglets ADMIN #}
-                                        
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{path ('app_admin_domaine_index')}}">Domaines</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{path ('app_admin_user_index')}}">Utilisateurs</a>
-                                        </li>
+                                        {# onglets ADMIN #}                                        
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{path ('app_admin_titre_index')}}">Titres</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{path ('app_admin_commentaire_index')}}">Commentaires à valider</a>
+                                            <a class="nav-link" href="{{path ('app_gestion')}}">Gestion</a>
                                         </li>
-                                        {% else %}
-                                        {# onglets UTILISATEUR #}
+                                        {% elseif is_granted('ROLE_PARTENAIRE') %}
+                                        {# onglets PARTENAIRE #}
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{path ('app_publication_index')}}">Mes Publications</a>
+                                            <a class="nav-link" href="{{path ('app_gestion')}}">Gestion</a>
                                         </li>
+                                       
+                                        
                                         {% endif %}
                                         
                                         
@@ -82,22 +87,24 @@
                                 </ul>    
                                 {% if app.user %}
                                     <div>
-                                        Bonjour {{ app.user.userIdentifier }}, {#<a href="{{ path('app_logout') }}">Déconnexion</a>#}
+                                        Bonjour {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Déconnexion</a>
                                     </div>
                                 {% else %}
                                     <div>
-                                        {# <a href="{{ path('app_login') }}">#}Connexion{#</a> #}
+                                        <a href="{{ path('app_login') }}">Connexion</a>
                                     </div>
                                 {% endif %}
                             </div>
                         </div>
                     </nav>
-                </div>
+                {# </div>
             </div>
-        </div>
-
-
+        </div> #}
+        
+            {# <br/><br/>
+            <h1>Bienvenue sur le 1er forum d'expertise immobilière </h1> #}
         {% endblock %}
+         <body>
         {% block body %}{% endblock %}
     </body>
 </html>

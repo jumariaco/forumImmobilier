@@ -35,6 +35,8 @@ form {
     position : fixed;
     width : 100%;
     z-index:6;
+    height: 47px;
+    padding-top:0;
 }
 // couleur écriture logo
 .navbar-brand {
@@ -52,6 +54,23 @@ form {
     text-decoration: none;
 }
 // -----------------fin navbar-----------------
+
+// ----------NAVBAR RESULTATS DE RECHERCHE-----------
+.nav-tabs {
+    display:flex;
+    position:fixed;
+    width:100%;
+    z-index:5;
+    padding-top: 45px;
+    border-bottom: 1px solid $secondary;
+    background-color: $light;
+}
+
+
+
+
+
+// ------------fin navbar resultats de recherche-------------
 button{
     background: linear-gradient($tertiary, $secondary);
     color: $light !important;
