@@ -71,6 +71,35 @@ form {
 
 
 // ------------fin navbar resultats de recherche-------------
+
+
+// -------------------HOME-------------------
+.hidden {
+    opacity:0;
+  }
+.console-container {
+   
+    font-family:Khula;
+    font-size:3em;
+    height:20px;
+    display:block;
+    position:absolute;
+  }
+.console-underscore {
+    display:inline-block;
+    position:relative;
+    top:-0.14em;
+    left:10px;
+  }
+
+
+
+
+// -------------------FIN HOME-------------------
+
+
+
+
 button{
     background: linear-gradient($tertiary, $secondary);
     color: $light !important;
@@ -138,4 +167,34 @@ button:hover{
     article {
         flex-basis: 100%;
     }
+    .console-container {
+        font-size:2em;
+    }
 }
+
+// -------------------FOOTER---------------------
+footer {
+    text-align: center;
+    padding: 5%;
+    background-color: $primary;
+    color : $light;
+    
+}
+footer a {
+    color: $light;
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: $light;
+    text-decoration: underline;
+}
+
+.footer-slogan {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding : 10px;
+}
+
+
+// -------------------FIN FOOTER---------------------

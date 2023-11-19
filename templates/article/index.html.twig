@@ -4,10 +4,15 @@
 
     
 {% block body %}
+<br/><br/>
+{# phrase d'accueil défilante avec JS #}
+<div class='console-container'><span id='text'></span><div class='console-underscore' id='console'>&#95;</div></div>
+<br/><br/><br/><br/>
     <h1>Liste des articles</h1>
 
         {% for publication in publications %}
         {% if 'ROLE_ADMIN' in publication.user.roles %}
+            {% if publication.statut == true %}
             <h2>{{ publication.titre }}</h2>
 
             <table class="table">
@@ -15,7 +20,7 @@
                     <tr>
                         <th>Domaines</th>
                         <td>{% for domaine in publication.domaines %}
-                        <a href= "{{path('app_admin_domaine_show', {id:domaine.id})}}">{{domaine.nom}}{% if not loop.last %},{% endif %}
+                        <a href= "{{path('app_domaine_show', {id:domaine.id})}}">{{domaine.nom}}{% if not loop.last %},{% endif %}
                         {% endfor %}
                         </td>
                         <th>Posté le </th>
@@ -38,6 +43,7 @@
                     </tr>
                 </tbody>
             </table>
+            {% endif %}
         {% endif %}
         {% endfor %}
 

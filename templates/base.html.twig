@@ -34,13 +34,14 @@
                                 <span class="navbar-toggler-icon"></span>
                             </button>
                                        
-                                    {# barre de recherche #}
+                                    
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                {# barre de recherche #}
                                     <form class="d-flex" role="search" action="{{ path('app_home_recherche') }}">
                                         <input class="form-control me-2" type="search" name="keyword" id="searchInput" placeholder="Rechercher une publication" aria-label="Search" value="{{ app.request.query.get('keyword') }}">
                                         <button class="btn btn-outline-success" type="submit">Search</button>
                                     </form>
                                     {# fin barre de recherche #}
-                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                         <li class="nav-item">
                                           <li class="nav-item">
@@ -107,6 +108,69 @@
          <body>
         {% block body %}{% endblock %}
     </body>
+  
+  <!-- Footer -->
+  <footer class="text-center text-white">
+    <!-- Grid container -->
+    <div class="container">
+      <!-- Section: Links -->
+      <section class="mt-5">
+        <!-- Grid row-->
+        <div class="row text-center d-flex justify-content-center pt-5">
+          <!-- Grid column -->
+          <div class="col-md-2">
+            <h6 class="text-uppercase font-weight-bold">
+              <a href="#!" class="text-white">Nous connaître</a>
+            </h6>
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-md-2">
+            <h6 class="text-uppercase font-weight-bold">
+              <a href="#!" class="text-white">Contact</a>
+            </h6>
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-md-2">
+            <h6 class="text-uppercase font-weight-bold">
+              <a href="#!" class="text-white">Mentions légales</a>
+            </h6>
+          </div>
+          <!-- Grid column -->
+        </div>
+        <!-- Grid row-->
+      </section>
+      <!-- Section: Links -->
+
+      <hr class="my-5" />
+
+          <!-- Section: Social -->
+      <section class="text-center mb-5">
+        <a href="https://twitter.com/i/flow/login?redirect_after_login=%2FPlus2POPSchool"><i
+                class="ri-twitter-fill"></i></a>
+        <a href="https://www.instagram.com/popschoolfr/"><i class="ri-instagram-fill"></i></a>
+        <a href="https://www.facebook.com/POPSchoolFr/"><i class="ri-facebook-box-fill"></i></a>
+        <a href="https://www.linkedin.com/in/popschool/"><i class="ri-linkedin-box-fill"></i></a>
+      </section>
+      <!-- Section: Social -->
+    </div>
+    <!-- Grid container -->
+
+    <!-- Copyright -->
+    <div
+         class="footer-slogan"
+         >
+      <a class="text-white" href="{{path ('app_home')}}"
+         >Le forum d'expertise immobilière accessible à tous</a
+        >
+    </div>
+    <!-- Copyright -->
+  </footer>
+  <!-- Footer -->
+
 </html>
 
 
