@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier : A propos{% endblock %}
+
+{% block body %}
+    <h1>Nous connaître</h1>
+
+    {{ include('admin/gestionSite/_form.html.twig', {'button_label': 'Update'}) }}
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Mentions légales{% endblock %}
+{% block body %}
+
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" href="#cgu">CGU</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="#reglementinterieur">Règlement intérieur</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="#confidentialite">Politique de confidentialité</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="#cookies">Cookies</a>
+  </li>
+</ul>
+<br/><br/><br/><br/>
+
+
+<h2 id="cgu">Conditions générales d’utilisation du site FORUMIMMOBILIER.FR</h2>
+<a href="{{ path('app_mentions_legales_edit', {'id': 3}) }}">edit</a>
+{% set mention = mentions|filter(item => item.id == 3)|first %}
+{{ mention.contenu|raw }}
+
+<h2 id="reglementinterieur">REGLEMENT INTERIEUR</h2>
+<a href="{{ path('app_mentions_legales_edit', {'id': 2}) }}">edit</a>
+{% set mention = mentions|filter(item => item.id == 2)|first %}
+{{ mention.contenu|raw }}
+
+
+<h2 id="confidentialite">POLITIQUE DE CONFIDENTIALITE</h2>
+<a href="{{ path('app_mentions_legales_edit', {'id': 1}) }}">edit</a>
+{% set mention = mentions|filter(item => item.id == 1)|first %}
+{{ mention.contenu|raw }}
+
+<h2 id="cookies">COOKIES</h2>
+<a href="{{ path('app_mentions_legales_edit', {'id': 4}) }}">edit</a>
+{% set mention = mentions|filter(item => item.id == 4)|first %}
+{{ mention.contenu|raw }}
+
+{% endblock %}
