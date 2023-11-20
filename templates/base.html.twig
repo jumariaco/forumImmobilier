@@ -3,6 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        {# lien icones de réseaux sociaux #}
         <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
         <title>{% block title %}{% endblock %}</title>
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
@@ -29,7 +30,7 @@
                     <nav class="navbar navbar-expand-lg bg-body-tertiary">
                         <div class="container-fluid">
                         {# ci-dessous mieux mettre un path que l'url directe ds symfony = moins de risqu d'erreurs #}
-                            <a class="navbar-brand" href="{{path ('app_home')}}">FORUM IMMOBILIER</a>
+                            <a class="navbar-brand nav-link" href="{{path ('app_home')}}">FORUM IMMOBILIER</a>
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                                 <span class="navbar-toggler-icon"></span>
                             </button>
@@ -88,11 +89,11 @@
                                 </ul>    
                                 {% if app.user %}
                                     <div>
-                                        Bonjour {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Déconnexion</a>
+                                        Bonjour {{ app.user.userIdentifier }}, <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
                                     </div>
                                 {% else %}
                                     <div>
-                                        <a href="{{ path('app_login') }}">Connexion</a>
+                                        <a class="nav-link"href="{{ path('app_login') }}">Connexion</a>
                                     </div>
                                 {% endif %}
                             </div>
@@ -120,7 +121,7 @@
           <!-- Grid column -->
           <div class="col-md-2">
             <h6 class="text-uppercase font-weight-bold">
-              <a href="#!" class="text-white">Nous connaître</a>
+              <a href="{{path ('app_a_propos')}}" class="text-white">Nous connaître</a>
             </h6>
           </div>
           <!-- Grid column -->
@@ -128,7 +129,7 @@
           <!-- Grid column -->
           <div class="col-md-2">
             <h6 class="text-uppercase font-weight-bold">
-              <a href="#!" class="text-white">Contact</a>
+              <a href="{{path ('app_contact')}}" class="text-white">Contact</a>
             </h6>
           </div>
           <!-- Grid column -->
@@ -136,7 +137,7 @@
           <!-- Grid column -->
           <div class="col-md-2">
             <h6 class="text-uppercase font-weight-bold">
-              <a href="#!" class="text-white">Mentions légales</a>
+              <a href="{{path ('app_mentions_legales')}}" class="text-white">Mentions légales</a>
             </h6>
           </div>
           <!-- Grid column -->
