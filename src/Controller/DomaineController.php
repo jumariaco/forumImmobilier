@@ -3,8 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Domaine;
+use App\Entity\Publication;
+use App\Entity\Commentaire;
 use App\Form\DomaineType;
+use App\Repository\PublicationRepository;
 use App\Repository\DomaineRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,10 +47,18 @@ class DomaineController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_domaine_show', methods: ['GET'])]
-    public function show(Domaine $domaine): Response
+    public function show($id, Domaine $domaine, DomaineRepository $domaineRepository, PublicationRepository $publicationRepository): Response
     {
+         // Récupérez l'objet Domaine à partir de l'ID
+        $domaine = $domaineRepository->find($id);
+
+        // Utilisez l'objet Domaine pour récupérer les publications associées
+        $publicationByDomaine = $publicationRepository->findByDomaine($domaine);
+
+
         return $this->render('domaine/show.html.twig', [
-            'domaine' => $domaine,
+            'publicationByDomaine' => $publicationByDomaine,
+            'domaine' => $domaine, 
         ]);
     }
 

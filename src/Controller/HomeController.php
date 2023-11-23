@@ -18,13 +18,16 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_home', methods: ['GET', 'POST'])]
     public function index(PublicationRepository $publicationRepository, EntityManagerInterface $entityManager): Response
     {
-        $publications = $publicationRepository->findAll();
-
+        // $publications = $publicationRepository->findAll();
+       
         return $this->render('home.html.twig', [
-            'publications' => $publications,
+            // 'publications' => $publications,
+            'publicationPubliee' => $publicationRepository->PublicationPubliee(),
+            
         ]);
     }
 
+    
     #[Route('/recherche', name: 'app_home_recherche', methods: ['GET', 'POST'])]
     public function recherche(PublicationRepository $publicationRepository, UserRepository $userRepository,Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -47,17 +50,9 @@ class HomeController extends AbstractController
             'userResults' => $userResults,
         ]);
 
-        // $results = [];
-
-        // if ($request->query->has('keyword')) {
-        //     // Traitez la recherche lorsque le formulaire est soumis
-        //     $keyword = $request->query->get('keyword');
-        //     $results = $entityManager->getRepository(Publication::class)->RecherchePublication($keyword, null, null);
-        // }
-
-        // return $this->render('recherche.html.twig', [
-        //     'results' => $results,
-        // ]);
+       
     }
+
+ 
 
 }

@@ -1,0 +1,11 @@
+<div class="partage">
+  
+    <a href="https://api.whatsapp.com/send?text={{ publication.titre|raw|url_encode }}%20{{ absolute_url(path('app_publication_show', {'id': publication.id})) }}" title="Partager sur Whatsapp"><i class="ri-whatsapp-line"></i></a>
+    <a href="https://t.me/share/url?url={{ absolute_url(path('app_publication_show', {'id': publication.id})) }}&text={{ publication.titre|raw|url_encode }}" title="Partager sur Telegram"><i class="ri-telegram-line"></i></a>
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ absolute_url(path('app_publication_show', {'id': publication.id})) }}" title="Partager sur Linkedin"><i class="ri-linkedin-box-line"></i></a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u{{ absolute_url(path('app_publication_show', {'id': publication.id})) }}" title="Partager sur Facebook"><i class="ri-facebook-circle-fill"></i></a>
+    <a href="https://twitter.com/intent/tweet?text={{ publication.titre|raw|url_encode }}%20{{ absolute_url(path('app_publication_show', {'id': publication.id}))}}%20@ForumImmobilier " title="Partager sur X(Twitter)"><i class="ri-twitter-x-line"></i></a>
+    <a href="https://www.reddit.com/submit?url={{ absolute_url(path('app_publication_show', {'id': publication.id})) }}&title={{ publication.titre|raw|url_encode }}" title="Partager sur Reddit"><i class="ri-reddit-fill"></i></a>
+  
+
+</div>

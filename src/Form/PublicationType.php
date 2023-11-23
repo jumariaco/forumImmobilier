@@ -22,7 +22,9 @@ class PublicationType extends AbstractType
         $builder
             ->add('titre')
             ->add('contenu', CKEditorType::class, ['purify_html' => true])
-            ->add('statut')
+            // ->add('statut', null, [
+            //     'disabled' => $options['is_membre'],
+            // ])
             ->add('imageFile', VichImageType::class, [
                 'required' => false,
                 'allow_delete' => true,
@@ -43,16 +45,17 @@ class PublicationType extends AbstractType
                 }
             ])
             // modifier pour ne sélectionner automatiquement l'user connecté
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'pseudo',
-                'required' => true,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')
-                        ->orderBy('u.id', 'ASC');
-                }
+            // ->add('user', EntityType::class, [
+            //     'class' => User::class,
+            //     'choice_label' => 'pseudo',
+            //     'required' => true,
+            //     'query_builder' => function (EntityRepository $er) {
+            //         return $er->createQueryBuilder('u')
+            //             ->orderBy('u.id', 'ASC');
+            //     }
                 
-            ]);  
+            // ])
+            ;  
             // a tester pour sélectionner automatiquement l'user connecté
             // $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             //     $form = $event->getForm();
@@ -69,6 +72,7 @@ class PublicationType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Publication::class,
+            'is_membre' => false, // Par défaut, le formulaire est configuré pour un utilisateur non MEMBRE
         ]);
     }
 }

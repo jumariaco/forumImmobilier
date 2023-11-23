@@ -6,9 +6,12 @@
 {% block body %}
     <h1>Liste des publications</h1>
 
+    
+
 <a href="{{ path('app_publication_new') }}">Nouvelle Publication</a>
     {% for publication in publications %}
         {% if 'ROLE_ADMIN' not in publication.user.roles %}
+            {% if publication.statut == true %}
                 <h2>{{ publication.titre }}</h2>
 
                 <table class="table">
@@ -52,6 +55,7 @@
                         </td>
                     </tbody>
                 </table>
+            {% endif %}    
         {% endif %}
     {% endfor %}
 {% endblock %}

@@ -9,42 +9,9 @@
 <div class='console-container'><span id='text'></span><div class='console-underscore' id='console'>&#95;</div></div>
 <br/><br/><br/><br/>
     <h1>Liste des articles</h1>
-
-        {% for publication in publications %}
-        {% if 'ROLE_ADMIN' in publication.user.roles %}
-            {% if publication.statut == true %}
-            <h2>{{ publication.titre }}</h2>
-
-            <table class="table">
-                <tbody>
-                    <tr>
-                        <th>Domaines</th>
-                        <td>{% for domaine in publication.domaines %}
-                        <a href= "{{path('app_domaine_show', {id:domaine.id})}}">{{domaine.nom}}{% if not loop.last %},{% endif %}
-                        {% endfor %}
-                        </td>
-                        <th>Posté le </th>
-                        <td>{{ publication.createdAt ? publication.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Contenu</th>
-                        <td>{{ publication.contenu|u.truncate(100, '...')|raw }} <a href="{{ path('app_article_show', {'id': publication.id}) }}"> Lire plus</a></td>
-                    </tr>
-                    <tr>
-                        <th>ImageFile</th>
-                        <td>
-                            {% if vich_uploader_asset(publication, 'imageFile') %}
-                            <img src="{{ vich_uploader_asset(publication, 'imageFile') }}">
-                            {% endif %}
-                        </td>
-                    <tr>
-                        <th>Commentaires</th>
-                        <td>{{ publication.commentaires|length }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            {% endif %}
-        {% endif %}
+    <div class="grillePublications">
+        {% for publication in articlePublie %}
+            {% include 'components/_publications.html.twig' %}
         {% endfor %}
-
+    </div>
 {% endblock %}

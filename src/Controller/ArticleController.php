@@ -19,8 +19,9 @@ class ArticleController extends AbstractController
     #[Route('/', name: 'app_article_index', methods: ['GET'])]
     public function index(PublicationRepository $publicationRepository): Response
     {
+        // $articlePublie = $publicationRepository->ArticlePublie();
         return $this->render('article/index.html.twig', [
-            'publications' => $publicationRepository->findAll(),
+            'articlePublie' => $publicationRepository->ArticlePublie(),
         ]);
     }
 
@@ -47,6 +48,7 @@ class ArticleController extends AbstractController
     #[Route('/{id}', name: 'app_article_show', methods: ['GET', 'POST'])]
     public function show(Publication $publication, Request $request, EntityManagerInterface $em): Response
     {
+        
         $commentaire = new Commentaire();
         $commentaire->setPublication($publication);
 
@@ -78,6 +80,7 @@ class ArticleController extends AbstractController
            
             return $this->redirectToRoute('app_publication_show', ['id' => $publication->getId()]);
         }
+        
 
 
         return $this->render('publication/show.html.twig', [

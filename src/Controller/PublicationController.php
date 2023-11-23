@@ -12,6 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+
 
 #[Route('/publication')]
 class PublicationController extends AbstractController
@@ -26,21 +28,59 @@ class PublicationController extends AbstractController
     {
         return $this->render('publication/index.html.twig', [
             'publications' => $publicationRepository->findAll(),
+            
         ]);
     }
 
+    // #[Route('/new', name: 'app_publication_new', methods: ['GET', 'POST'])]
+    // public function new(Request $request, EntityManagerInterface $entityManager): Response
+    // {
+    //     $publication = new Publication();
+    //     $form = $this->createForm(PublicationType::class, $publication);
+    //     $form->handleRequest($request);
+
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $entityManager->persist($publication);
+    //         $entityManager->flush();
+
+    //         return $this->redirectToRoute('app_publication_index', [], Response::HTTP_SEE_OTHER);
+    //     }
+
+    //     return $this->renderForm('publication/new.html.twig', [
+    //         'publication' => $publication,
+    //         'form' => $form,
+    //     ]);
+    // }
+
     #[Route('/new', name: 'app_publication_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, AuthorizationCheckerInterface $authorizationChecker): Response
     {
         $publication = new Publication();
-        $form = $this->createForm(PublicationType::class, $publication);
+
+        if($this->getUser()){
+            $publication->setUser($this->getUser());
+        }
+
+        
+ 
+        $form = $this->createForm(PublicationType::class, $publication, [
+            'is_membre' => $authorizationChecker->isGranted('ROLE_MEMBRE'),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Définir le statut en fonction du rôle de l'utilisateur
+            if ($authorizationChecker->isGranted('ROLE_PARTENAIRE') || $authorizationChecker->isGranted('ROLE_ADMIN')) {
+                $publication->setStatut(true);
+            } else { //rôle membre
+                $publication->setStatut(false);
+            }
             $entityManager->persist($publication);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_publication_index', [], Response::HTTP_SEE_OTHER);
+            // réussir à avoir un addFlash pour afficher que la publication est bien validée (ou en attente de validtaion)
+
+            return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('publication/new.html.twig', [

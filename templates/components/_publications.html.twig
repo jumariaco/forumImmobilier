@@ -1,0 +1,29 @@
+ <article class="publication">
+                        <h2>{{ publication.titre }}</h2>
+                        <p class="publicationContenu">{{ publication.contenu|u.truncate(100, '...')|raw }} <a href="{{ path('app_publication_show', {'id': publication.id}) }}"> Lire plus</a></p>
+                        <p>{% if vich_uploader_asset(publication, 'imageFile') %}
+                                <img loading = "lazy" src="{{ vich_uploader_asset(publication, 'imageFile') }}">
+                            {% endif %}
+                        </p>
+                        {% for domaine in publication.domaines %}
+                            <button><a href="{{ path('app_domaine_show', {'id': domaine.id}) }}">{{ domaine.nom }}</a></button>
+                        {% endfor %}
+                        <p>Posté le {{ publication.createdAt ? publication.createdAt|date('d-m-Y') : '' }} 
+                            <i class="ri-user-2-fill"></i><a href= "{{path('app_profile_show', {id:publication.user.id})}}">{{ publication.user.pseudo }}</a>
+                            <i class="ri-chat-1-fill"></i>{{ publication.commentaires|length }}
+                            <i class="ri-thumb-up-fill"></i>{{ publication.likes|length }}
+                        {{ publication.statut ? 'Publié' : 'Brouillon' }}    
+                        </p>
+                        {% if app.user is not null and ('ROLE_ADMIN' in app.user.roles or publication.user == app.user) %}
+                            <button><a href="{{ path('app_publication_edit', {'id': publication.id}) }}">edit</a></button>
+                        {% endif %}
+                        {% if publication.statut == false %}
+                            {% if app.user is not null and 'ROLE_ADMIN' in app.user.roles or 'ROLE_PARTENAIRE' in app.user.roles %}       
+                                <a href="{{ path('app_publication_delete', {'id': publication.id}) }}">delete</a>
+                                <a href="{{ path('app_publication_edit', {'id': publication.id}) }}">edit</a>
+                                <button  type="submit">Publier la publication-bouton à travailler</button>
+                            {% endif %}
+                        {% endif %}
+                        
+                        
+                    </article>  

@@ -58,11 +58,12 @@
             </tr>
         </tbody>
     </table>
-        {{ include ('components/_partage.html.twig') }}
+    {{ include('components/_partage.html.twig') }}
+    {% if is_granted('ROLE_ADMIN') or app.user == publication.user %}   
         {{ include('publication/_delete_form.html.twig') }}
-<a href="{{ path('app_publication_index') }}">back to list</a>
-
-    <a href="{{ path('app_publication_edit', {'id': publication.id}) }}">edit</a>
+        <button href="{{ path('app_publication_edit', {'id': publication.id}) }}">Modifier la publication</button>
+    {% endif %}
+    <button href="{{ path('app_publication_index') }}">Retour</button>
          
         
         

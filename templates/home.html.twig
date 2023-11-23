@@ -7,60 +7,21 @@
 {# phrase d'accueil défilante avec JS #}
 <div class='console-container'><span id='text'></span><div class='console-underscore' id='console'>&#95;</div></div>
 <br/><br/><br/><br/>
-                                                      
-<button href="{{ path('app_publication_new') }}">Nouvelle Publication</button>
+
+{% if app.user %}                                           
+    <button><a href="{{ path('app_publication_new') }}">Nouvelle Publication</a></button>
+{% endif %}
     <br/>
     <h2>Nos dernières publications</h2>
-    {% for publication in publications %}
-        {% if 'ROLE_ADMIN' not in publication.user.roles %}
-            {% if publication.statut == true %}
-                <h2>{{ publication.titre }}</h2>
-
-                <table class="table">
-                    <tbody>
-                        <tr>
-                            <th>Auteur</th>
-                            <td><a href= "{{path('app_admin_user_show', {id:publication.user.id})}}">{{ publication.user.pseudo }}</td>
-                            <th>Posté le </th>
-                            <td>{{ publication.createdAt ? publication.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Domaines</th>
-                            <td>{% for domaine in publication.domaines %}
-                            <a href= "{{path('app_domaine_show', {id:domaine.id})}}">{{domaine.nom}}{% if not loop.last %},{% endif %}
-                            {% endfor %}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Contenu</th>
-                            <td>{{ publication.contenu|u.truncate(100, '...')|raw }} <a href="{{ path('app_publication_show', {'id': publication.id}) }}"> Lire plus</a></td>
-                        </tr>
-                        <tr>
-                            <th>ImageFile</th>
-                            <td>
-                                {% if vich_uploader_asset(publication, 'imageFile') %}
-                                <img loading = "lazy" src="{{ vich_uploader_asset(publication, 'imageFile') }}">
-                                {% endif %}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Commentaires</th>
-                            <td>{{ publication.commentaires|length }}</td>
-                        </tr>
-                        <tr>
-                            <th>Statut</th>
-                            <td>{{ publication.statut ? 'Publié' : 'Brouillon' }}</td>
-                        </tr>
-                        {% if app.user is not null and ('ROLE_ADMIN' in app.user.roles or publication.user == app.user) %}
-                            <td>
-                            
-                                <a href="{{ path('app_publication_edit', {'id': publication.id}) }}">edit</a>
-                            </td>
-                        {% endif %}
-                    </tbody>
-                </table>
-            {% endif %}
-        {% endif %}
-    {% endfor %}
+        <div class="grillePublications">
+        {% for publication in publicationPubliee %}
+            {# {% if 'ROLE_ADMIN' not in publication.user.roles %}
+                {% if publication.statut == true %} #}
+                   {% include 'components/_publications.html.twig' %}
+                {# {% endif %}
+            {% endif %} #}
+        {% endfor %}
+    </div>
+        
 {% endblock %}
 

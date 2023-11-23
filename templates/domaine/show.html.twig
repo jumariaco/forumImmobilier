@@ -3,36 +3,20 @@
 {% block title %}Domaine{% endblock %}
 
 {% block body %}
-    <h1>Domaine</h1>
+    <h1>{{ domaine.nom }}</h1>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('app_domaine_edit', {'id': domaine.id}) }}">Modifier le nom de domaine</a>
+        {{ include('domaine/_delete_form.html.twig') }}
+        <a href="{{ path('app_domaine_new') }}">Créer un nouveau domaine</a>
+    {% endif %}
+    
+    <h2>Résultats des Publications et Articles ({{ publicationByDomaine|length }}): </h2><br/>
+    <div class="grillePublications">
+        {% for publication in publicationByDomaine %}
+            {% include 'components/_publications.html.twig' %}
+        {% endfor %}
+    </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ domaine.id }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ domaine.nom }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ domaine.createdAt ? domaine.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ domaine.updatedAt ? domaine.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>DeletedAt</th>
-                <td>{{ domaine.deletedAt ? domaine.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_domaine_index') }}">back to list</a>
-
-    <a href="{{ path('app_domaine_edit', {'id': domaine.id}) }}">edit</a>
-
-    {{ include('domaine/_delete_form.html.twig') }}
+   
+    
 {% endblock %}

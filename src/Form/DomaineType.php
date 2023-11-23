@@ -18,6 +18,7 @@ class DomaineType extends AbstractType
             ->add('partenaires')
             ->add('membres')
             ->add('publications')
+            
         ;
     }
 
