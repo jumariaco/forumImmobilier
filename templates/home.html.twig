@@ -6,22 +6,16 @@
 <br/><br/>
 {# phrase d'accueil défilante avec JS #}
 <div class='console-container'><span id='text'></span><div class='console-underscore' id='console'>&#95;</div></div>
-<br/><br/><br/><br/>
+<br/><br/>
 
 {% if app.user %}                                           
     <button><a href="{{ path('app_publication_new') }}">Nouvelle Publication</a></button>
 {% endif %}
     <br/>
     <h2>Nos dernières publications</h2>
-        <div class="grillePublications">
         {% for publication in publicationPubliee %}
-            {# {% if 'ROLE_ADMIN' not in publication.user.roles %}
-                {% if publication.statut == true %} #}
                    {% include 'components/_publications.html.twig' %}
-                {# {% endif %}
-            {% endif %} #}
         {% endfor %}
-    </div>
         
 {% endblock %}
 

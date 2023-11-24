@@ -2,16 +2,26 @@
 
 body {
     background-color: $light;
+    font-size : 18px;
 }
+
+/*vue mobile*/
+// @media (max-width:767px) {
+//     body{
+//         font-size : 20px;
+//     }
+// }
 
 // sur tout le site retire les border et padding et margin
 form {
     fieldset{
         border:none;
-        padding:0;
-        margin:0;
+        // padding:20px 30px;
+        margin:20px 30px;
     }
   }
+
+
 
 //   choix multiples avec barre de scroll
 .form_scrollable-checkboxes {
@@ -26,18 +36,20 @@ form {
     }
 }
 
-// -------------------NAVBAR-------------------
-// body{
-//     display:flex;
-// }
 
+
+// -------------------NAVBAR-------------------
+
+header{
+    height : 100px;
+}
 .navbar{
     display:flex;
     position : fixed;
     width : 100%;
     z-index:6;
-    height: 47px;
     padding-top:0;
+    padding-bottom: 0;
 }
 // couleur écriture logo
 .navbar-brand {
@@ -47,7 +59,7 @@ form {
 // couleur liens
 .nav-link{
     color: $light;
-    font-size:large;
+    font-size:x-large;
 }
 
 .nav-link:hover {
@@ -66,7 +78,12 @@ form {
 .btn-outline-success {
     font-size: medium ;
 }
-
+/*vue mobile*/
+@media (max-width:767px) {
+    .btn-outline-success {
+        font-size: x-large ;
+    }
+}
 
 // -----------------fin navbar-----------------
 
@@ -80,7 +97,7 @@ $base-size: 100px;
 .containerPrincipal {
     display: flex;
 }
-.container{
+.containerRegister{
     display:flex;
     align-items: center;
     justify-content: center;
@@ -145,12 +162,12 @@ $base-size: 100px;
     .containerPrincipal {
         display: flex;
     }
-    .container{
+    .containerRegister{
         display:flex;
         align-items: center;
         justify-content: center;
-        
     }
+
     .badge {
         display: block;
         position: relative;
@@ -164,7 +181,8 @@ $base-size: 100px;
         border-radius: 50%;
         border: 5px $primary;
         transition: $easing;
-        box-shadow: 0px .5rem 1rem rgba(0,0,0,.75);}
+        box-shadow: 0px .5rem 1rem rgba(0,0,0,.75);
+    }
     
     .badge p{
         flex-wrap: wrap;
@@ -175,8 +193,6 @@ $base-size: 100px;
         }
      
     .text {
-            // display: block;
-            // position: relative;
             width: $base-size*2;
             height: $base-size*2;
             line-height: $base-size*0.9;
@@ -211,7 +227,7 @@ $base-size: 100px;
     .containerPrincipal {
         display: flex;
     }
-    .container{
+    .containerRegister{
         display:flex;
         align-items: center;
         justify-content: center;
@@ -309,11 +325,16 @@ $base-size: 100px;
 .console-underscore {
     display:inline-block;
     position:relative;
-    top:-0.14em;
+    top:-0.10em;
     left:10px;
   }
 
-
+/*vue mobile*/
+@media (max-width:767px) {
+    .console-container {
+        font-size:30px;
+    }
+}
 
 
 // -------------------FIN HOME-------------------
@@ -329,7 +350,6 @@ button{
     color: $light !important;
     border: 1px $secondary solid;
     border-radius: 8px;
-    
 }
 button:hover{
     background : $tertiary;
@@ -339,42 +359,76 @@ button a{
     color: $light;
 }
 
+
 //-----------------------PUBLICATIONS ET ARTICLES-----------------
-.grillePublications{
+article{
+    width : 90vw;
+    margin : 0 auto;
+    // display:flex;
+    flex-direction:column;
+}
+.publicationBody{
     display:flex;
-    flex-wrap : wrap;
+    margin: 0 auto;
+    align-items:space-between;
+}
+.publicationBodyLeft{
+    width: 30%;
+}
+.publicationBodyRight{
+    width: 70%;
+}
+.publicationDomaines{
+    display: flex;
+    flex-direction:row;
     justify-content: center;
-    align-items : center;
-    margin : 10px 30px 10px 30px;
+    flex-wrap: wrap;
+}
+.publicationDomaines button {
+    margin-right: 5px;
+    margin-bottom:3px;
 }
 
-.publication{
-    background-color: $light;
-    flex-basis : 30%;
-    flex-grow:1;
-    flex-shrink: 1;
-    padding:20px;
-    margin:10px;
-    border : 4px solid $primary;
-    border-radius: 30px;
-    text-align: center;
-}
 
-.publicationContenu{
-    text-align: justify;
-}
 
-.publication p{
-    margin : 10px;
-}
 
-.publication button{
-    margin: 3px;
-}
+// .grillePublications{
+//     display:flex;
+//     flex-wrap : wrap;
+//     justify-content: center;
+//     align-items : center;
+//     margin : 2px 5px 2px 5px;
+// }
 
-.lirePlus{
-    color: pink;
-}
+// .publication{
+//     background-color: $light;
+//     flex-basis : 30%;
+//     flex-grow:1;
+//     flex-shrink: 1;
+//     padding:15px;
+//     margin:10px;
+//     border : 3px solid $primary;
+//     border-radius: 20px;
+//     text-align: center;
+    
+// }
+
+// .publication:hover{
+//     border : 4px solid $tertiary;
+//     cursor: pointer;
+// }
+
+// .publicationContenu{
+//     text-align: justify;
+// }
+
+// .publication p{
+//     margin : 10px;
+// }
+
+// .publication button{
+//     margin: 3px;
+// }
 
 
 
@@ -407,24 +461,30 @@ button a{
 }
 // -------------------FIN COMMENTAIRES---------------------
 
-@media screen and (max-width: 768px) {
-    .grillePublications {
-        flex-direction: column;
+/*vue mobile*/
+@media (max-width:767px)  {
+    .publicationBodyLeft{       
+       font-size: 12px;
     }
-
-    article {
-        flex-basis: 100%;
-    }
-    .console-container {
-        font-size:2em;
-    }
+    // .grillePublications {
+    //     flex-direction: column;
+    // }
+    // .publicationContenu{
+    //     font-size: 40px;
+    // }
+    // article {
+    //     flex-basis: 100%;
+    // }
+    
 }
 
 
 // -------------------FOOTER---------------------
 footer {
     text-align: center;
-    padding: 5%;
+    // margin: 0px 0px 0 0px;
+    // padding-bottom : 0px;
+    // position : relative;
     background-color: $primary;
     color : $light;
     
@@ -432,6 +492,7 @@ footer {
 footer a {
     color: $light;
     text-decoration: none;
+    text-align: center;
 }
 
 footer a:hover {
