@@ -10,7 +10,8 @@
     <a class="nav-link active" href="#resultatsutilisateurs">Utilisateurs</a>
   </li>
 </ul>
-<br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
+
 {# ------------------------------------------------------------------------------------------------------
 ------------------------------RESULTATS DE LA BARRE DE RECHERCHE PUBLICATIONS ET ARTICLES---------------
 ------------------------------------------------------------------------------------------------------ #}
@@ -26,14 +27,12 @@
                         <p>Aucun résultat trouvé.</p>
                     </ul>
                 {% else %}
-                    <ul>   
-                        <div class="grillePublications">            
+                    <ul>              
                             {% for publication in publicationResults %}
                                 {% if publication.contenu or publication.titre is defined %}
                                     {% include 'components/_publications.html.twig' %}
                                 {% endif %}
                             {% endfor %}
-                         </div>
                     </ul>
                 {% endif %}
            
@@ -79,55 +78,7 @@
                 </thead>
                 <tbody>
                     {% for user in userResults %}
-                        <tr>
-                            <td><a href="{{ path('app_profile_show', {'id': user.id}) }}">{{ user.Pseudo }}</a></td>
-                            <td>
-                                {% if 'ROLE_PARTENAIRE' in user.roles %}Partenaire {% endif %}
-                                {% if 'ROLE_MEMBRE' in user.roles %}Membre {% endif %}
-                                {% if 'ROLE_ADMIN' in user.roles %}Admin {% endif %}
-                            </td>
-                            <td>
-                                {% if 'ROLE_MEMBRE' in user.roles %}
-                                    {% if user.membre.prenom and user.membre.nom is not empty %}
-                                        {{user.membre.prenom}} {{user.membre.nom}}
-                                    {% endif %}
-                                {% endif %}
-
-                                {% if 'ROLE_PARTENAIRE' in user.roles %}
-                                    {% if user.partenaire.prenom and user.partenaire.nom is not empty %}
-                                        {{user.partenaire.prenom}} {{user.partenaire.nom}}
-                                    {% endif %}
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if 'ROLE_PARTENAIRE' in user.roles %}
-                                    {{user.partenaire.metier}}(société : {{ user.partenaire.societe }})
-                                {% endif %}
-                                {% if 'ROLE_MEMBRE' in user.roles %}
-                                    {{user.membre.metier}}
-                                {% endif %}
-                            </td>
-                            <td>{{ user.createdAt ? user.createdAt|date('d-m-Y') : '' }}</td>
-                            {% if is_granted('ROLE_ADMIN') %} 
-                                <td>{{ user.id }}</td>
-                                <td>{{ user.email }}</td>
-                                
-                                <td>{{ user.newsletter ? 'Yes' : 'No' }}</td>
-                                <td>{{ user.acceptationCgu ? 'Yes' : 'No' }}</td>
-                                <td>{{ user.actif ? 'Yes' : 'No' }}</td>
-                                
-                                <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                                <td>{{ user.deletedAt ? user.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
-                                <td>
-                                    <a href="{{ path('app_profile_edit', {'id': user.id}) }}">edit</a>
-                                    <a href="{{ path('app_profile_password', {'id': user.id}) }}">password</a>
-                                </td>
-                            {% endif %}
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="12">no records found</td>
-                        </tr>
+                        {% include 'components/_users.html.twig' %}
                     {% endfor %}
                 </tbody>
             </table>

@@ -3,44 +3,59 @@
 {% block title %}Gestion{% endblock %}
 
 {% block body %}
- </br></br></br>
+{% include 'components/_slogan.html.twig' %}
+ </br></br></br><br/><br/>
 
     <h1>Gestion des dossiers en attente</h1>
 
-     {# <h2>Publications à valider</h2>
-     <div class="grillePublications">
-        {% for publication in publications %}
-            {% if 'ROLE_ADMIN' not in publication.user.roles %}
-                {% if publication.statut == false %}
-                    {% include 'components/_publications.html.twig' %} #}
-             
-                            {# {% if app.user is not null and ('ROLE_ADMIN' or 'ROLE_PARTENAIRE' in app.user.roles or publication.user == app.user) %}
-                                <td>
-                                    <button class="publish-button" data-publication-id="{{ publication.id }}" type="button">Publier la publication</button>
-                                </td>
-                            {% endif %} #}
-                        
-                    {# {% if app.user is not null and ('ROLE_ADMIN' or 'ROLE_PARTENAIRE' in app.user.roles or publication.user == app.user) %} #}
-                    
-                {# {% endif %}
-            {% endif %}
-        {% endfor %}
-     </div> #}
+    {% if is_granted('ROLE_ADMIN') %}
+        <h2>Nouveaux profils Partenaires à valider</h2>
+                {% if partenairesNonActifs is empty %}
+            <ul>
+                <p>Aucun résultat trouvé.</p>
+            </ul>
+        {% else %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Pseudo</th>
+                        <th>Roles</th>
+                        <th>Prénom Nom</th>
+                        <th>Métier</th>
+                        <th>Inscrit depuis le </th>
+                        {% if is_granted('ROLE_ADMIN') %} 
+                            <th>Id</th>
+                            <th>Email</th>
+                            <th>Actif</th>
+                            <th>AcceptationCgu</th>
+                            <th>Newsletter</th>
+                            <th>CreatedAt</th>
+                            <th>actions</th>
+                            <th>Activation du profil</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in partenairesNonActifs %}
+                        {% include 'components/_profils.html.twig' %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+          
+     {% endif %}
+
      {% if is_granted('ROLE_ADMIN')or is_granted('ROLE_PARTENAIRE') %}
         <h2>Publications à valider</h2>
-        <div class="grillePublications">
             {% for publication in publicationBrouillonMembre %}
                         {% include 'components/_publications.html.twig' %}
             {% endfor %}
-        </div>
      {% endif %}
 
      <h2> Mes brouillons</h2>
-     <div class="grillePublications">
         {% for publication in brouillons %}
             {% include 'components/_publications.html.twig' %}
         {% endfor %}
-     </div>
 
 Mon classement :   A mettre aussi dans le profil
 NOmbre de commentaire choix retenu

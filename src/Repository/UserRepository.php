@@ -53,13 +53,47 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $this->createQueryBuilder('u')
         ->where('u.Pseudo LIKE :keyword')
         ->setParameter('keyword', '%' . $keyword . '%')
+        ->andWhere('u.roles NOT LIKE :roleAdmin')
+        ->setParameter('roleAdmin', '%ROLE_ADMIN%')
+        ->andWhere('u.actif = :actif')
+        ->setParameter('actif', true)
+        ->addOrderBy('u.roles', 'DESC')
+        ->addOrderBy('u.Pseudo', 'ASC')
         ->getQuery()
         ->getResult();
         
     }
 
-  
-   
+    /**
+     * @return User[] Returns an array of active User objects
+     */
+    public function FindByUserActif()
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.roles NOT LIKE :roleAdmin')
+            ->setParameter('roleAdmin', '%ROLE_ADMIN%')
+            ->andWhere('u.actif = :actif')
+            ->setParameter('actif', true)
+            ->addOrderBy('u.roles', 'DESC')
+            ->addOrderBy('u.Pseudo', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return User[] Returns an array of active User objects
+     */
+    public function FindByPartenaireNonActif()
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.roles LIKE :rolePartenaire')
+            ->setParameter('rolePartenaire', '%ROLE_PARTENAIRE%')
+            ->andWhere('u.actif IS NULL')
+            ->addOrderBy('u.createdAt', 'ASC')
+            ->addOrderBy('u.Pseudo', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
     
 //    /**
 //     * @return User[] Returns an array of User objects

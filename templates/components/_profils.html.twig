@@ -1,0 +1,52 @@
+<tr>
+                            <td><button class="buttonUsers"><a href="{{ path('app_profile_show', {'id': user.id}) }}">{{ user.Pseudo }}</a></button></td>
+                            <td>
+                                {% if 'ROLE_PARTENAIRE' in user.roles %}Partenaire {% endif %}
+                                {% if 'ROLE_MEMBRE' in user.roles %}Membre {% endif %}
+                                {% if 'ROLE_ADMIN' in user.roles %}Admin {% endif %}
+                            </td>
+                            <td>
+                                {% if 'ROLE_MEMBRE' in user.roles %}
+                                    {% if user.membre.prenom and user.membre.nom is not empty %}
+                                        {{user.membre.prenom}} {{user.membre.nom}}
+                                    {% endif %}
+                                {% endif %}
+
+                                {% if 'ROLE_PARTENAIRE' in user.roles %}
+                                    {% if user.partenaire.prenom and user.partenaire.nom is not empty %}
+                                        {{user.partenaire.prenom}} {{user.partenaire.nom}}
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if 'ROLE_PARTENAIRE' in user.roles %}
+                                    {{user.partenaire.metier}}(société : {{ user.partenaire.societe }})
+                                {% endif %}
+                                {% if 'ROLE_MEMBRE' in user.roles %}
+                                    {{user.membre.metier}}
+                                {% endif %}
+                            </td>
+                            <td>{{ user.createdAt ? user.createdAt|date('d-m-Y') : '' }}</td>
+                            {% if is_granted('ROLE_ADMIN') %} 
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.email }}</td>
+                                
+                                <td>{{ user.newsletter ? 'Yes' : 'No' }}</td>
+                                <td>{{ user.acceptationCgu ? 'Yes' : 'No' }}</td>
+                                <td>{{ user.actif ? 'Yes' : 'No' }}</td>
+                                
+                                <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                                <td>
+                                    <button><a href="{{ path('app_profile_edit', {'id': user.id}) }}">edit</a></button>
+                                </td>
+                                {% if user.actif is null %}
+                                    <td>
+                                        <form method="post" action="{{ path('app_profile_active', {'id': user.id}) }}" onsubmit="return confirm('Etes-vous sûr de vouloir activer ce profil partenaire?');">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('publish' ~ user.id) }}">
+                                            <button >Activer</button>
+                                        </form>
+                                    </td>
+                                {% endif %}
+                            {% endif %}
+                        </tr>
+                    

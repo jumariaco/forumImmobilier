@@ -4,13 +4,10 @@
 
 {% block body %}
 
-    {# barre de recherche #}
-    {# <form class="d-flex" role="search" action="{{ path('app_home_recherche') }}">
-        <input class="form-control me-2" type="search" name="identite" id="searchInput" placeholder="Rechercher un utilisateur" aria-label="Search" value="{{ app.request.query.get('identite') }}">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-    </form> #}
-    {# fin barre de recherche #}
+    {% include 'components/_slogan.html.twig' %}
     </br></br></br>
+    
+    <br/><br/>
     <h1>Nos utilisateurs</h1>
     {% if is_granted('ROLE_ADMIN') %}
         <button><a href="{{ path('app_profile_new_admin') }}">Créer un nouvel administrateur    </a></button>  
@@ -38,54 +35,8 @@
             </tr>
         </thead>
         <tbody>
-        {% for user in users %}
-            <tr>
-                <td><a href="{{ path('app_profile_show', {'id': user.id}) }}">{{ user.Pseudo }}</a></td>
-                <td>
-                        {% if 'ROLE_PARTENAIRE' in user.roles %}Partenaire {% endif %}
-                        {% if 'ROLE_MEMBRE' in user.roles %}Membre {% endif %}
-
-                        {% if 'ROLE_ADMIN' in user.roles %}Admin {% endif %}
-                </td>
-                <td>
-                {% if 'ROLE_MEMBRE' in user.roles %}
-                        {% if user.membre.prenom and user.membre.nom is not empty %}
-                            {{user.membre.prenom}} {{user.membre.nom}}
-                        {% endif %}{% endif %}
-
-                
-                    {% if 'ROLE_PARTENAIRE' in user.roles %}
-                        {% if user.partenaire.prenom and user.partenaire.nom is not empty %}
-                            {{user.partenaire.prenom}} {{user.partenaire.nom  }}
-                        {% endif %}{% endif %}
-                </td>
-                <td>{% if 'ROLE_PARTENAIRE' in user.roles %}
-                    {{user.partenaire.metier}}(société : {{ user.partenaire.societe }})
-                {% endif %}
-                {% if 'ROLE_MEMBRE' in user.roles %}
-                    {{user.membre.metier}}
-                {% endif %}
-                    </td>
-                    <td>{{ user.createdAt ? user.createdAt|date('d-m-Y') : '' }}</td>
-                    {% if is_granted('ROLE_ADMIN') %}  
-                    <td>{{ user.id }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.newsletter ? 'Yes' : 'No' }}</td>
-                    <td>{{ user.acceptationCgu ? 'Yes' : 'No' }}</td>
-                    <td>{{ user.actif ? 'Yes' : 'No' }}</td>
-                    <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                    <td>{{ user.deletedAt ? user.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
-                    <td>
-                        <a href="{{ path('app_profile_show', {'id': user.id}) }}">show</a>
-                        <a href="{{ path('app_profile_edit', {'id': user.id}) }}">edit</a>
-                        <a href="{{ path('app_profile_password', {'id': user.id}) }}">password</a>
-                    </td>
-                {% endif %}
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="12">no records found</td>
-            </tr>
+        {% for user in usersActifs %}
+            {% include 'components/_profils.html.twig' %}
         {% endfor %}
         </tbody>
     </table>
