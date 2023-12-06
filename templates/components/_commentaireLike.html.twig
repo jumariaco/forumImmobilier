@@ -1,0 +1,11 @@
+{% if app.user %}
+    {% set hasLiked = commentaire.likes.contains(app.user) %}
+
+    <form method="post" action="{{ path('app_commentaire_like', {'id': commentaire.id}) }}">
+        <button class="btn {% if hasLiked %}disliked{% endif %}">
+            <i class="ri-thumb-{{ hasLiked ? 'down' : 'up' }}-fill"></i>
+            {{ commentaire.likes|length }}
+        </button>
+        <input type="hidden" name="_token" value="{{ csrf_token('commentaireLike' ~ commentaire.id) }}">
+    </form>
+{% endif %}
