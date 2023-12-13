@@ -3,7 +3,9 @@
 {% block title %}Nous connaître{% endblock %}
 {% block body %}
 </br> </br>
+{% if is_granted('ROLE_ADMIN') %}
 <a href="{{ path('app_mentions_legales_edit', {'id': 6}) }}">edit</a>
+{% endif %}
 {% set mention = mentions|filter(item => item.id == 6)|first %}
 {{ mention.contenu|raw }}
 {% endblock %}

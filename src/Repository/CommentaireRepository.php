@@ -21,6 +21,20 @@ class CommentaireRepository extends ServiceEntityRepository
         parent::__construct($registry, Commentaire::class);
     }
 
+
+//     /**
+//      * @return Commentaire[] Returns an array of Commentaire objects and select the most usefull
+//      */
+//    public function commentaireChoixRetenu()
+//    {
+//         return $this->createQueryBuilder('c')
+//         ->andWhere('c.choixRetenu = :choixRetenu')
+//         ->setParameter('choixRetenu', true)
+//         ->getQuery()
+//         ->getResult();
+//    }
+
+
 //    /**
 //     * @return Commentaire[] Returns an array of Commentaire objects
 //     */

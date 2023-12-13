@@ -1,0 +1,149 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block body %}
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active" href="{{ path('app_profile_show', {'id': user.id}) }}">Actives</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{{ path('app_profile_publication_sans_reponse', {'id': user.id}) }}">Sans réponse</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{{ path('app_profile_publication_close', {'id': user.id}) }}">Closes</a>
+    </li>
+    {% if app.user == user %}  
+    <li class="nav-item">
+        <a class="nav-link active" href="{{ path('app_profile_brouillon', {'id': user.id}) }}">Brouillons</a>
+    </li>
+    {% endif %}
+    <li class="nav-item">
+        <a class="nav-link active" href="{{ path('app_profile_commentaire', {'id': user.id}) }}">Commentaires</a>
+    </li>
+</ul>
+</br></br></br><br/><br/>
+{# {% if 'ROLE_ADMIN' in user.roles %} #}
+
+       <h1>{% if 'ROLE_PARTENAIRE' in user.roles %}Partenaire {% endif %}
+        {% if 'ROLE_MEMBRE' in user.roles %}Membre {% endif %}
+        {% if 'ROLE_ADMIN' in user.roles %}Admin {% endif %} : {{ user.Pseudo }}</h1>
+
+        {# bouton pour s'abonner #}
+    {% include 'components/_follow.html.twig' %}
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Nom Prénom</th>
+                <td>{% if 'ROLE_MEMBRE' in user.roles %}
+                        {% if user.membre.prenom and user.membre.nom is not empty %}
+                            {{user.membre.prenom}} {{user.membre.nom}}
+                        {% endif %}{% endif %}
+
+                
+                    {% if 'ROLE_PARTENAIRE' in user.roles %}
+                        {% if user.partenaire.prenom and user.partenaire.nom is not empty %}
+                            {{user.partenaire.prenom}} {{user.partenaire.nom}}
+                        {% endif %}{% endif %}
+                </td>
+            </tr>
+            
+            {% if 'ROLE_PARTENAIRE' in user.roles %}
+                <tr>
+                    <th>Société</th>
+                    <td>{{ user.partenaire.societe }}</td>
+                </tr>
+            {% endif %}
+            {% if 'ROLE_MEMBRE' in user.roles %}
+                {% if user.membre.metier is not empty %}
+                <tr>
+                    <th>Métier</th>
+                    <td>{{ user.membre.metier }}</td>
+                </tr>
+                {% endif %}
+            {% endif %}
+            {% if 'ROLE_PARTENAIRE' in user.roles %}
+                {% if user.partenaire.metier is not empty %}
+                <tr>
+                    <th>Métier</th>
+                    <td>{{ user.partenaire.metier }}</td>
+                </tr>
+                {% endif %}
+            {% endif %}
+            {% if 'ROLE_MEMBRE' in user.roles %}
+                {% if user.membre.metier is not empty %}
+                <tr>
+                    <th>Domaines d'expertise</th>
+                    {% for domaine in user.membre.domaines %}
+                        <td>{{ domaine.nom }}</td>
+                    {% endfor %}
+                </tr>
+                {% endif %}
+            {% endif %}
+            {% if 'ROLE_PARTENAIRE' in user.roles %}
+                {% if user.partenaire.metier is not empty %}
+                    <tr>
+                        <th>Domaines d'expertise</th>
+                        {% for domaine in user.partenaire.domaines %}
+                            <td>{{ domaine.nom }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endif %}
+            {% endif %}
+            <tr>
+                <th>Commentaires Utiles</th>
+                <td>{% for commentaire in user.commentaires %}
+                    {% if commentaire.choixRetenu %}{{commentaire.choixRetenu|length}} générant la meilleure solution
+                    {% endif %}{% endfor %} 
+                </td>
+            </tr>
+            {% if is_granted('ROLE_ADMIN') or app.user == user %}
+                <tr>
+                    <th>Email</th>
+                    <td>{{ user.email }}</td>
+                </tr>
+                
+                <tr>
+                    <th>Newsletter</th>
+                    <td>{{ user.newsletter ? 'Yes' : 'No' }}</td>
+                </tr>
+                <tr>
+                    <th>AcceptationCgu</th>
+                    <td>{{ user.acceptationCgu ? 'Yes' : 'No' }}</td>
+                </tr>  
+            {% endif %}     
+        </tbody>
+    </table>
+    {% if app.user == user %}
+            <button> <a href="{{ path('app_profile_password', {'id': user.id}) }}">Modifier mon mot de passe</a></button>
+    {% endif %}
+    {% if is_granted('ROLE_ADMIN') or app.user == user %}
+        <button><a href="{{ path('app_profile_edit', {'id': user.id}) }}">Modifier le profil</a></button>
+        <button><a href="{{ path('app_profile_delete', {'id': user.id}) }}">Supprimer le profil</a></button>
+    {% endif %}
+    <br/>
+    <button><a href="{{ path('app_profile_index') }}">Retour aux utilisateurs</a></button>
+
+
+
+<div>
+    {% if user.publications is not empty %}
+        <h2>Publications avec commentaire retenu</h2>
+        {% for publication in user.publications %}
+            {% if publication.commentaires is not empty %}
+                {% for commentaire in publication.commentaires %}
+                    {% if commentaire.choixRetenu %}
+                        {% include 'components/_publications.html.twig' %}
+                         {% set commentaireRetenuTrouve = true %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <p>Aucune publication avec commentaire retenu</p>
+    {% endif %}
+</div>
+
+
+{% endblock %}

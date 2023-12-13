@@ -3,12 +3,35 @@
 {% block title %}User{% endblock %}
 
 {% block body %}
-</br></br></br>
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active" href="{{ path('app_profile_show', {'id': user.id}) }}">Actives</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{{ path('app_profile_publication_sans_reponse', {'id': user.id}) }}">Sans réponse</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{{ path('app_profile_publication_close', {'id': user.id}) }}">Closes</a>
+    </li>
+    {% if app.user == user %}  
+    <li class="nav-item">
+        <a class="nav-link active" href="{{ path('app_profile_brouillon', {'id': user.id}) }}">Brouillons</a>
+    </li>
+    {% endif %}
+    <li class="nav-item">
+        <a class="nav-link active" href="{{ path('app_profile_commentaire', {'id': user.id}) }}">Commentaires</a>
+    </li>
+</ul>
+</br></br></br><br/><br/>
 {# {% if 'ROLE_ADMIN' in user.roles %} #}
 
        <h1>{% if 'ROLE_PARTENAIRE' in user.roles %}Partenaire {% endif %}
         {% if 'ROLE_MEMBRE' in user.roles %}Membre {% endif %}
         {% if 'ROLE_ADMIN' in user.roles %}Admin {% endif %} : {{ user.Pseudo }}</h1>
+
+    {# bouton pour s'abonner #}
+    {% include 'components/_follow.html.twig' %}
+
 
     <table class="table">
         <tbody>
@@ -100,53 +123,22 @@
         <button><a href="{{ path('app_profile_edit', {'id': user.id}) }}">Modifier le profil</a></button>
         <button><a href="{{ path('app_profile_delete', {'id': user.id}) }}">Supprimer le profil</a></button>
     {% endif %}
-    <br/>
+    </br></br>
     <button><a href="{{ path('app_profile_index') }}">Retour aux utilisateurs</a></button>
 
 
-    
-<h2> Publications ({{ user.publications|length }}): </h2>
-    <div class="grillePublications">
-        {% if user.publications is not empty %}
+<div>
+    {% if user.publications is not empty %}
+        <h2> Publications ({{ user.publications|length }}): </h2>
             {% for publication in user.publications %}
               
                 {% include 'components/_publications.html.twig' %}
             {% endfor %}
-        {% else %}
-            <p>Aucune publication</p>
-        {% endif %}
-    </div>
-<h2> Commentaires ({{ user.commentaires|length }}): </h2>
-Nombre de commentaires : {{ user.commentaires|length }} dont 
-{% for commentaire in user.commentaires %}
-    {% if commentaire.choixRetenu %} dont {{commentaire.choixRetenu|length}}
-    {% endif %}{% endfor %} générant la meilleure solution
+    {% else %}
+        <p>Aucune publication</p>
+    {% endif %}
+</div>
 
-    <div class="grillePublications">
-        {% if user.commentaires is not empty %}
-            {% for commentaire in user.commentaires %}
-                {% if commentaire.choixRetenu %}
-                    <article class="publication">
-                        <h3>{{ commentaire.publication.titre }}</a></h3>
-                        <p>{{ commentaire.contenu|u.truncate(100, '...')|raw }}<a href="{{ path('app_publication_show', {'id': commentaire.publication.id}) }}"> Lire plus</a></p>
-                        <p>{{ commentaire.createdAt ? commentaire.createdAt|date('Y-m-d ') : '' }}</p>
-                        <button>Elu meilleur commentaire </button>
-                    </article>   
-                {% endif %}
-            {% endfor %}
-            {% for commentaire in user.commentaires %}
-                {% if not commentaire.choixRetenu %}
-                    <article class="publication">
-                        <h3>{{ commentaire.publication.titre }}</a></h3>
-                        <p>{{ commentaire.contenu|u.truncate(100, '...')|raw }}<a href="{{ path('app_publication_show', {'id': commentaire.publication.id}) }}"> Lire plus</a></p>
-                        <p>{{ commentaire.createdAt ? commentaire.createdAt|date('Y-m-d ') : '' }}</p>
-                    </article>   
-                {% endif %}
-            {% endfor %}
-        {% else %}
-            <p>Aucun commentaire</p>
-        {% endif %}
-    </div>
 
 
     

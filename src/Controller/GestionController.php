@@ -3,8 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Publication;
-
+use App\Entity\Titre;
 use App\Repository\PublicationRepository;
+use App\Repository\TitreRepository;
 use App\Repository\UserRepository;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,12 +16,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class GestionController extends AbstractController
 {
     #[Route('/gestion', name: 'app_gestion')]
-    public function index(PublicationRepository $publicationRepository, UserRepository $userRepository): Response
+    public function index(PublicationRepository $publicationRepository, UserRepository $userRepository, TitreRepository $titreRepository): Response
     {
+        
         return $this->render('gestion/index.html.twig', [
             'brouillons' => $publicationRepository->Brouillon(),
             'publicationBrouillonMembre' => $publicationRepository->PublicationBrouillonMembre(),
             'partenairesNonActifs' => $userRepository->FindByPartenaireNonActif(),
+            'titres' => $titreRepository->findAll(),
 
         ]);
     }

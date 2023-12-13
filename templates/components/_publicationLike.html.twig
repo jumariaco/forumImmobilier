@@ -2,7 +2,7 @@
     {% set hasLiked = publication.likes.contains(app.user) %}
 
     <form method="post" action="{{ path('app_publication_like', {'id': publication.id}) }}">
-        <button class="btn {% if hasLiked %}disliked{% endif %}">
+        <button>
             <i class="ri-thumb-{{ hasLiked ? 'down' : 'up' }}-fill"></i>
             {{ publication.likes|length }}
         </button>

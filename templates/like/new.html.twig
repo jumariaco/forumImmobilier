@@ -1,0 +1,37 @@
+{# {% extends 'base.html.twig' %}
+
+{% block title %}New Like{% endblock %}
+
+{% block body %}
+    <h1>Create new Like</h1>
+
+    {{ include('like/_form.html.twig') }}
+
+    <a href="{{ path('app_like_index') }}">back to list</a>
+{% endblock %} #}
+
+{# templates/like/_new.html.twig #}
+
+
+{# FONCTIONNE TRES BINE  #}
+{# {% if app.user %}
+    <form method="post" action="{{ path('app_commentaire_like_new', {'id': commentaire.id}) }}">
+        <button class="btn"><i class="ri-thumb-up-fill"></i> {{ commentaire.likes|length }}</button>
+        <input type="hidden" name="_token" value="{{ csrf_token('commentaireLike' ~ commentaire.id) }}">
+    </form>
+{% endif %} #}
+
+
+{# MAIS ICI TESTER POUR TOGGLE DISLIKE #}
+
+{# {% if app.user %}
+    {% set hasLiked = commentaire.likes.contains(app.user) %}
+
+    <form method="post" action="{{ path('app_commentaire_like_new', {'id': commentaire.id}) }}">
+        <button class="btn {% if hasLiked %}disliked{% endif %}">
+            <i class="ri-thumb-{{ hasLiked ? 'down' : 'up' }}-fill"></i>
+            {{ commentaire.likes|length }}
+        </button>
+        <input type="hidden" name="_token" value="{{ csrf_token('commentaireLike' ~ commentaire.id) }}">
+    </form>
+{% endif %} #}

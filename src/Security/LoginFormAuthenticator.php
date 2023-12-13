@@ -44,12 +44,29 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+           //ce bloc permet à l'utilisateur d'accéder à la page qu'il demande qd il se connecte
+        //si je désactive, il sera plutôt redirigé vers la page que j'ai choisie (ex:son profil)
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
 
+        $user=$token->getUser();
+        $roles=$token->getRoleNames();
+       
+      
+
+        if(in_array('ROLE_MEMBRE', $roles)){
+        //l'utilisateur est un membre
+
+        //redirection vers la page d'accueil
         return new RedirectResponse($this->urlGenerator->generate('app_home'));
+        } else {
+        //l'utilisateur est un admin ou un partenaire
+        // redirection vers la page de gestion
+
+        return new RedirectResponse($this->urlGenerator->generate('app_gestion'));
     }
+}
 
     protected function getLoginUrl(Request $request): string
     {

@@ -8,6 +8,8 @@
     </br></br></br>
     
     <br/><br/>
+    <button class="btnAbonnements"><a href="{{ path('app_profile_abonnements') }}">Mes abonnements</a></button>
+    </br>
     <h1>Nos utilisateurs</h1>
     {% if is_granted('ROLE_ADMIN') %}
         <button><a href="{{ path('app_profile_new_admin') }}">Créer un nouvel administrateur    </a></button>  
@@ -19,18 +21,16 @@
             <tr>
                 <th>Pseudo</th>
                 <th>Roles</th>
+                <th> </th> 
                 <th>Prénom Nom</th>
                 <th>Métier</th>
                 <th>Inscrit depuis le </th>
                 {% if is_granted('ROLE_ADMIN') %}  
                     <th>Id</th>
                     <th>Email</th>
-                    <th>Actif</th>
-                    <th>AcceptationCgu</th>
                     <th>Newsletter</th>
-                    <th>UpdatedAt</th>
-                    <th>DeletedAt</th>
-                    <th>actions</th>
+                    <th>Actif</th>
+                    <th> </th>
                 {% endif %}
             </tr>
         </thead>

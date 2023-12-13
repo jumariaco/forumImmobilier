@@ -6,6 +6,7 @@ use App\Entity\Domaine;
 use App\Entity\Membre;
 use App\Entity\Titre;
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -25,9 +26,9 @@ class MembreType extends AbstractType
                         ->orderBy('t.nom', 'ASC');
                 }
             ])
-            ->add('nom', ['purify_html' => true])
-            ->add('prenom', ['purify_html' => true])
-            ->add('metier', ['purify_html' => true])
+            ->add('nom')
+            ->add('prenom')
+            ->add('metier')
             ->add('domaines', EntityType::class, [
                 'class' => Domaine::class,
                 'choice_label' => 'nom',
@@ -42,7 +43,10 @@ class MembreType extends AbstractType
                         ->orderBy('d.nom', 'ASC');
                 }
             ])
-            ->add ('user')
+            // ->add ('user', EntityType::class, [
+            //     'class' => User::class,
+            //     'choice_label' => 'email',
+            // ])
         ;
     }
 

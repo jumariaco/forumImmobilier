@@ -3,6 +3,10 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Form\AdminProfileType;
+use App\Form\MembreProfileType;
+use App\Form\PartenaireProfileType;
+use App\Form\UserPasswordType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,14 +26,63 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_admin_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/new-admin', name: 'app_admin_user_new_admin', methods: ['GET', 'POST'])]
+    public function newAdmin(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(AdminProfileType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user
+                ->setRoles(['ROLE_ADMIN'])
+            ;
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_admin_user_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('admin/user/new.html.twig', [
+            'user' => $user,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/new-membre', name: 'app_admin_user_new_membre', methods: ['GET', 'POST'])]
+    public function newMembre(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $user = new User();
+        $form = $this->createForm(MembreProfileType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user
+                ->setRoles(['ROLE_MEMBRE'])
+            ;
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_admin_user_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('admin/user/new.html.twig', [
+            'user' => $user,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/new-partenaire', name: 'app_admin_user_new_partenaire', methods: ['GET', 'POST'])]
+    public function newPartenaire(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $user = new User();
+        $form = $this->createForm(PartenaireProfileType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user
+                ->setRoles(['ROLE_PARTENAIRE'])
+            ;
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -53,7 +106,33 @@ class UserController extends AbstractController
     #[Route('/{id}/edit', name: 'app_admin_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(UserType::class, $user);
+        if(in_array('ROLE_ADMIN', $user->getRoles())){
+            $form=$this->createForm(AdminProfileType::class, $user);
+        }if(in_array('ROLE_PARTENAIRE', $user->getRoles())){
+            $form=$this->createForm(PartenaireProfileType::class, $user);
+        }if(in_array('ROLE_MEMBRE', $user->getRoles())){
+            $form=$this->createForm(MembreProfileType::class, $user);
+        }
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_admin_user_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('admin/user/edit.html.twig', [
+            'user' => $user,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}/password', name: 'app_admin_user_password', methods: ['GET', 'POST'])]
+    public function password(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        $form= $this->createForm(UserPasswordType::class, $user);
+        
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

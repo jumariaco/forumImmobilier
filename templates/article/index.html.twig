@@ -4,10 +4,8 @@
 
     
 {% block body %}
-<br/><br/>
-{# phrase d'accueil défilante avec JS #}
-<div class='console-container'><span id='text'></span><div class='console-underscore' id='console'>&#95;</div></div>
-<br/><br/><br/><br/>
+{% include 'components/_slogan.html.twig' %}
+<br/><br/><br/><br/><br/>
     <h1>Liste des articles</h1>
     <div class="grillePublications">
         {% for publication in articlePublie %}

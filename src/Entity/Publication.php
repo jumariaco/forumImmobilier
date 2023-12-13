@@ -56,7 +56,7 @@ class Publication
     #[ORM\ManyToMany(targetEntity: Domaine::class, inversedBy: 'publications')]
     private Collection $domaines;
 
-    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: Commentaire::class)]
+    #[ORM\OneToMany(mappedBy: 'publication', targetEntity: Commentaire::class, orphanRemoval: true)]
     private Collection $commentaires;
 
     #[ORM\ManyToOne(inversedBy: 'publications')]

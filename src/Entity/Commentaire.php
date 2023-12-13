@@ -57,14 +57,13 @@ class Commentaire
     #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
     private Collection $enfants;
 
-    // test
+    
     #[ORM\ManyToOne(inversedBy: 'petitenfants')]
     private ?Commentaire $enfant = null;
 
     #[ORM\OneToMany(mappedBy: 'enfant', targetEntity: self::class)]
     private Collection $petitenfants;
 
-    // fin test
 
     #[ORM\ManyToOne(inversedBy: 'commentaires', targetEntity: Publication::class)]
     #[ORM\JoinColumn(nullable: false)]
@@ -247,13 +246,13 @@ class Commentaire
         return $this->enfants;
     }
 
-    // test
+    
     public function setEnfant(?self $enfant): self
     {
         $this->enfant = $enfant;
         return $this;
     }
-    // fin test
+    
     public function addEnfant(self $enfant): self
     {
         if (!$this->enfants->contains($enfant)) {
@@ -275,7 +274,7 @@ class Commentaire
     }
 
 
-    // test
+    
     /**
      * @return Collection<int, self>
      * */
@@ -304,7 +303,7 @@ class Commentaire
         }
         return $this;
     }
-    // fin test
+   
 
     public function __toString()
     {

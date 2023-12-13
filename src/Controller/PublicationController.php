@@ -23,34 +23,47 @@ class PublicationController extends AbstractController
     {
         $this->entityManager = $entityManager;
     }
-    #[Route('/', name: 'app_publication_index', methods: ['GET'])]
-    public function index(PublicationRepository $publicationRepository): Response
+    // #[Route('/', name: 'app_publication_index', methods: ['GET'])]
+    // public function index(PublicationRepository $publicationRepository): Response
+    // {
+    //     return $this->render('publication/index.html.twig', [
+    //         'publications' => $publicationRepository->findAll(),
+            
+    //     ]);
+    // }
+    
+    #[Route('/active', name: 'app_publication_active', methods: ['GET', 'POST'])]
+    public function publicationActive(PublicationRepository $publicationRepository, EntityManagerInterface $entityManager): Response
     {
-        return $this->render('publication/index.html.twig', [
-            'publications' => $publicationRepository->findAll(),
+       
+        return $this->render('publication/active.html.twig', [
+            // 'publications' => $publications,
+            'publicationActive' => $publicationRepository->PublicationPublieeActive(),
             
         ]);
     }
 
-    // #[Route('/new', name: 'app_publication_new', methods: ['GET', 'POST'])]
-    // public function new(Request $request, EntityManagerInterface $entityManager): Response
-    // {
-    //     $publication = new Publication();
-    //     $form = $this->createForm(PublicationType::class, $publication);
-    //     $form->handleRequest($request);
 
-    //     if ($form->isSubmitted() && $form->isValid()) {
-    //         $entityManager->persist($publication);
-    //         $entityManager->flush();
+    #[Route('/sans-reponse', name: 'app_publication_sans_reponse', methods: ['GET', 'POST'])]
+    public function publicationSansReponse(PublicationRepository $publicationRepository, EntityManagerInterface $entityManager): Response
+    {
+       
+        return $this->render('publication/sans_reponse.html.twig', [
+            'publicationSansReponse' => $publicationRepository->PublicationPublieeSansReponse(),
+            
+        ]);
+    }
 
-    //         return $this->redirectToRoute('app_publication_index', [], Response::HTTP_SEE_OTHER);
-    //     }
 
-    //     return $this->renderForm('publication/new.html.twig', [
-    //         'publication' => $publication,
-    //         'form' => $form,
-    //     ]);
-    // }
+    #[Route('/close', name: 'app_publication_close', methods: ['GET', 'POST'])]
+    public function publicationClose(PublicationRepository $publicationRepository, EntityManagerInterface $entityManager): Response
+    {
+       
+        return $this->render('publication/close.html.twig', [
+            'publicationClose' => $publicationRepository->PublicationClose(),
+            
+        ]);
+    }
 
     #[Route('/new', name: 'app_publication_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, AuthorizationCheckerInterface $authorizationChecker): Response
@@ -146,7 +159,7 @@ class PublicationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_publication_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('publication/edit.html.twig', [
@@ -155,14 +168,20 @@ class PublicationController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_publication_delete', methods: ['POST'])]
-    public function delete(Request $request, Publication $publication, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$publication->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($publication);
-            $entityManager->flush();
-        }
 
-        return $this->redirectToRoute('app_publication_index', [], Response::HTTP_SEE_OTHER);
-    }
+   
+
+
+
+
+    // #[Route('/{id}', name: 'app_publication_delete', methods: ['POST'])]
+    // public function delete(Request $request, Publication $publication, EntityManagerInterface $entityManager): Response
+    // {
+    //     if ($this->isCsrfTokenValid('delete'.$publication->getId(), $request->request->get('_token'))) {
+    //         $entityManager->remove($publication);
+    //         $entityManager->flush();
+    //     }
+
+    //     return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+    // }
 }

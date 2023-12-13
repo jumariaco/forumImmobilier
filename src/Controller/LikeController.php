@@ -82,7 +82,7 @@ class LikeController extends AbstractController
     }
 
     #[Route('/commentaire/{id}/like/new', name: 'app_commentaire_like', methods: ['POST'])]
-    public function commentaireLike(Request $request, Commentaire $commentaire): Response
+    public function commentaireLike(Request $request, Commentaire $commentaire, Publication $publication): Response
     {
         $user = $this->getUser();
     
@@ -94,26 +94,32 @@ class LikeController extends AbstractController
     
         $entityManager = $this->getDoctrine()->getManager();
     
-        // Vérifiez si l'utilisateur a déjà liké ce commentaire
-        $existingLike = $entityManager->getRepository(Like::class)->findOneBy([
-            'user' => $user,
-            'commentaire' => $commentaire,
-        ]);
-    
-        if ($existingLike) {
-            // Si un like existe déjà, supprimez-le (toggle)
-            $entityManager->remove($existingLike);
-        } else {
-            // Sinon, créez un nouveau like
-            $like = new Like();
-            $like->setUser($user);
-            $like->setCommentaire($commentaire);
-            $entityManager->persist($like);
+        // Vérifiez le jeton CSRF
+        if ($this->isCsrfTokenValid('commentaireLike' . $commentaire->getId(), $request->request->get('_token'))) {
+            // Vérifiez si l'utilisateur a déjà liké ce commentaire
+            $existingLike = $entityManager->getRepository(Like::class)->findOneBy([
+                'user' => $user,
+                'commentaire' => $commentaire,
+            ]);
+        
+            if ($existingLike) {
+                // Si un like existe déjà, supprimez-le (toggle)
+                $entityManager->remove($existingLike);
+            } else {
+                // Sinon, créez un nouveau like
+                $like = new Like();
+                $like->setUser($user);
+                $like->setCommentaire($commentaire);
+                $entityManager->persist($like);
+            }
+        
+            $entityManager->flush();
         }
+
+        // Récupérez l'ID de la publication associée au commentaire
+        $publicationId = $commentaire->getPublication()->getId();
     
-        $entityManager->flush();
-    
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_publication_show', ['id' => $publicationId]);
     }
    
     #[Route('/publication/{id}/like', name: 'app_publication_like', methods: ['POST'])]
@@ -129,26 +135,29 @@ class LikeController extends AbstractController
     
         $entityManager = $this->getDoctrine()->getManager();
     
-        // Vérifiez si l'utilisateur a déjà liké ce commentaire
-        $existingLike = $entityManager->getRepository(Like::class)->findOneBy([
-            'user' => $user,
-            'publication' => $publication,
-        ]);
-    
-        if ($existingLike) {
-            // Si un like existe déjà, supprimez-le (toggle)
-            $entityManager->remove($existingLike);
-        } else {
-            // Sinon, créez un nouveau like
-            $like = new Like();
-            $like->setUser($user);
-            $like->setPublication($publication);
-            $entityManager->persist($like);
+        // Vérifiez le jeton CSRF
+        if ($this->isCsrfTokenValid('publicationLike' . $publication->getId(), $request->request->get('_token'))) {
+            // Vérifiez si l'utilisateur a déjà liké ce commentaire
+            $existingLike = $entityManager->getRepository(Like::class)->findOneBy([
+                'user' => $user,
+                'publication' => $publication,
+            ]);
+            
+            if ($existingLike) {
+                // Si un like existe déjà, supprimez-le (toggle)
+                $entityManager->remove($existingLike);
+            } else {
+                // Sinon, créez un nouveau like
+                $like = new Like();
+                $like->setUser($user);
+                $like->setPublication($publication);
+                $entityManager->persist($like);
+            }
+        
+            $entityManager->flush();
         }
     
-        $entityManager->flush();
-    
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_publication_show', ['id' => $publication->getId()]);
    
     }
 }

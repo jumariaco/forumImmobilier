@@ -18,6 +18,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserPasswordType extends AbstractType
 {
+    private $hasher;
+
+    public function __construct(UserPasswordHasherInterface $hasher)
+    {
+        $this->hasher=$hasher;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $hasher=$this->hasher;

@@ -2,17 +2,30 @@
 
 {% block title %}FORUM IMMOBILIER{% endblock %}
 {% block body %}
-  
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active" href="{{ path('app_home') }}">Publications récentes</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{{ path('app_publication_active') }}">Actives</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{{ path('app_publication_sans_reponse') }}">Sans réponse</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{{ path('app_publication_close') }}">Closes</a>
+    </li>
+</ul>
 <br/><br/>
-{# phrase d'accueil défilante avec JS #}
-<div class='console-container'><span id='text'></span><div class='console-underscore' id='console'>&#95;</div></div>
-<br/><br/>
+{% include 'components/_slogan.html.twig' %}
+
+<br/><br/><br/><br/><br/>
 
 {% if app.user %}                                           
-    <button><a href="{{ path('app_publication_new') }}">Nouvelle Publication</a></button>
+    <button class="debutPage"><a  href="{{ path('app_publication_new') }}">Nouvelle Publication</a></button>
 {% endif %}
     <br/>
-    <h2>Nos dernières publications</h2>
+    <h2 class="debutPage">Nos dernières publications</h2>
         {% for publication in publicationPubliee %}
                    {% include 'components/_publications.html.twig' %}
         {% endfor %}

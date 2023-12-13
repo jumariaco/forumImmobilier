@@ -61,7 +61,91 @@ class PublicationRepository extends ServiceEntityRepository
     ->getResult();
     }
 
- 
+    /**
+     * Get published publications written by a partner or member without comments
+     * @return Publication[]
+     */
+    public function PublicationPublieeSansReponse()
+    {
+    return $this->createQueryBuilder('p')
+    ->leftJoin('p.commentaires', 'c') // Utilisation de leftJoin pour inclure les publications sans commentaire
+    ->innerJoin('p.user', 'u')  //user singulier car relation Many To One
+    ->andWhere('u.roles NOT LIKE :roleAdmin')
+    ->setParameter('roleAdmin', '%ROLE_ADMIN%')
+    ->andWhere('p.statut = :statut')
+    ->setParameter('statut', true)
+    ->andWhere('c.id IS NULL')  
+    ->addOrderBy('p.createdAt', 'DESC')
+    ->getQuery()
+    ->getResult();
+    }
+
+    // /**
+    //  * Get published publications written by a partner or member with comments
+    //  * @return Publication[]
+    //  */
+    // public function PublicationPublieeActive()
+    // {
+    // return $this->createQueryBuilder('p')
+    // ->leftJoin('p.commentaires', 'c') // Utilisation de leftJoin pour inclure les publications sans commentaire
+    // ->innerJoin('p.user', 'u')  //user singulier car relation Many To One
+    // ->andWhere('u.roles NOT LIKE :roleAdmin')
+    // ->setParameter('roleAdmin', '%ROLE_ADMIN%')
+    // ->andWhere('p.statut = :statut')
+    // ->setParameter('statut', true)
+    // ->andWhere('c.id IS NOT NULL')  
+    // ->andWhere('c.choixRetenu = :choixRetenu')
+    // ->setParameter('choixRetenu', false)
+    // ->addOrderBy('p.createdAt', 'DESC')
+    // ->getQuery()
+    // ->getResult();
+    // }
+
+    /**
+     * Get closed published publications written by a partner or member (with one choix retenu)
+     * @return Publication[]
+     */
+    public function PublicationClose()
+    {
+        return $this->createQueryBuilder('p')
+            ->innerJoin('p.user', 'u')
+            ->leftJoin('p.commentaires', 'c')
+            ->andWhere('u.roles NOT LIKE :roleAdmin')
+            ->setParameter('roleAdmin', '%ROLE_ADMIN%')
+            ->andWhere('p.statut = :statut')
+            ->setParameter('statut', true)
+            ->andWhere('c.choixRetenu = :choixRetenu')
+            ->setParameter('choixRetenu', true)
+            ->addOrderBy('p.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+        /**
+     * Get published publications written by a partner or member with comments
+     * @return Publication[]
+     */
+    public function PublicationPublieeActive()
+    {
+        $publicationClose = $this->PublicationClose(); // Appel d'une fonction pour obtenir les IDs des publications fermées
+    
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.commentaires', 'c')
+            ->innerJoin('p.user', 'u')
+            ->andWhere('u.roles NOT LIKE :roleAdmin')
+            ->setParameter('roleAdmin', '%ROLE_ADMIN%')
+            ->andWhere('p.statut = :statut')
+            ->setParameter('statut', true)
+            ->andWhere('c.id IS NOT NULL')
+            ->andWhere('c.choixRetenu = :choixRetenu')
+            ->setParameter('choixRetenu', false)
+            ->andWhere('p.id NOT IN (:publicationClose)')
+            ->setParameter('publicationClose', $publicationClose)
+            ->addOrderBy('p.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     /**
      * Get brouillon publication written by a member
      * @return Publication[]

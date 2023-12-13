@@ -87,3 +87,45 @@ function consoleText(words, id, colors) {
 
 
 // -------------------------FIN HOME-------------------------
+
+// ----------TEST POUR PUBLIER UNE PUBLICATION EN ATTENTE DE PUBLICATION (DANS GESTION)----
+
+
+
+// document.addEventListener('DOMContentLoaded', function () {
+//   var publishButtons = document.querySelectorAll('.publishButton');
+
+//   publishButtons.forEach(function (button) {
+//       button.addEventListener('click', function () {
+//           var publicationId = button.getAttribute('data-publication-id');
+
+//           // Envoyer une requête AJAX pour mettre à jour le statut
+//           var xhr = new XMLHttpRequest();
+//           xhr.open('POST', '/publication/publish/' + publicationId, true);
+//           xhr.setRequestHeader('Content-Type', 'application/json');
+
+//           xhr.onload = function () {
+//               if (xhr.status >= 200 && xhr.status < 300) {
+//                   // Succès de la requête, mettre à jour le statut côté client
+//                   var statusCell = document.getElementById('statut-cell-' + publicationId);
+//                   var currentStatus = statusCell.innerText.trim();
+//                   statusCell.innerText = currentStatus === 'Publié' ? 'Brouillon' : 'Publié';
+
+//                   // Vous pouvez ajouter d'autres actions ou messages ici
+//                   alert(JSON.parse(xhr.responseText).message);
+//               } else {
+//                   // Gérer les erreurs, si nécessaire
+//                   alert('Une erreur s\'est produite lors de la publication de la publication.');
+//               }
+//           };
+
+//           xhr.onerror = function () {
+//               // Gérer les erreurs réseau
+//               alert('Erreur réseau lors de la publication de la publication.');
+//           };
+
+//           xhr.send();
+//       });
+//   });
+// });
+

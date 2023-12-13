@@ -59,16 +59,15 @@
                                             <a class="nav-link" href="{{path ('app_profile_index')}}">Utilisateurs</a>
                                         </li>
                                         <li class="nav-item">
+                                            <a class="nav-link" href="{{path ('app_profile_abonnements')}}">Mes abonnements</a>
+                                        </li>
+                                        <li class="nav-item">
                                             <a class="nav-link" href="{{path ('app_profile_show',{'id':app.user.id} )}}">Mon Profil</a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{path ('app_gestion')}}">Gestion</a>
-                                        </li>
-                                        {% if is_granted('ROLE_ADMIN') %}
-                                        {# onglets ADMIN #}                                        
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{path ('app_admin_titre_index')}}">Titres</a>
-                                        </li>
+                                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_PARTENAIRE')%}                                    
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{path ('app_gestion')}}">Gestion</a>
+                                            </li>
                                         {% endif %}
                                     {% endif %}
                                     
@@ -91,11 +90,13 @@
         
             {# <br/><br/>
             <h1>Bienvenue sur le 1er forum d'expertise immobilière </h1> #}
+    {% endblock %}
+    <body>
+       
+        {% block body %}
+        
         {% endblock %}
-         <body>
-        {% block body %}{% endblock %}
     </body>
-  
   <!-- Footer -->
   <footer class="text-center text-white">
     <!-- Grid container -->

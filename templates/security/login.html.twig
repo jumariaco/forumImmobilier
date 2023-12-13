@@ -4,7 +4,8 @@
 
 {% block body %}
 
-</br> </br> </br>
+{% include 'components/_slogan.html.twig' %}
+</br><br/><br/><br/><br/>
 <form method="post">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -34,14 +35,15 @@
 <h4> Pas de compte ? Rejoignez notre communauté et gagnez en connaissance :</h4>
 
 <div class="containerPrincipal">
-<div class="container">
+<div class="containerRegister">
     <p class="badge">Etre visible par sa connaissance </p>
-    <p class="text">Devenir partenaire</p>
+    <a href="{{ path('app_profile_new_partenaire') }}"><button class="text" >Devenir partenaire</button></a>
 </div>
-<div class="container">
+<div class="containerRegister">
     <p class="badge">Avoir la connaissance à portée de main</p>
-    <p class="text">Devenir membre</p>
+    <a href="{{ path('app_profile_new_membre') }}"><button class="text">Devenir membre</button></a>
 </div>
 </div>
+
 	
 {% endblock %}

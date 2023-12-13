@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{# {% extends 'base.html.twig' %}
 
 {% block title %}Partenaire index{% endblock %}
 
@@ -39,8 +39,8 @@
                 <td>{{ partenaire.updatedAt ? partenaire.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ partenaire.deletedAt ? partenaire.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_admin_partenaire_show', {'id': partenaire.id}) }}">show</a>
-                    <a href="{{ path('app_admin_partenaire_edit', {'id': partenaire.id}) }}">edit</a>
+                    <a href="{{ path('app_partenaire_show', {'id': partenaire.id}) }}">show</a>
+                    <a href="{{ path('app_partenaire_edit', {'id': partenaire.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -51,5 +51,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_admin_partenaire_new') }}">Create new</a>
-{% endblock %}
+    <a href="{{ path('app_partenaire_new') }}">Create new</a>
+{% endblock %} #}

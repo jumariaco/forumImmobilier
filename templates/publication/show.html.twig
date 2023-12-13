@@ -4,14 +4,14 @@
 {% block title %}Publication{% endblock %}
 
 {% block body %}
-</br></br></br>
+</br></br></br><br/>
     {% for message in app.flashes('success') %}
-        <div class="alert alert-success">
+        <div class="debutPage" class="alert alert-success">
             {{ message|raw }}
         </div>
     {% endfor %}
-    <article class="publication">
-        <h1>{{ publication.titre }}</h1>
+    <article class="debutPage" class="publication">
+        <h1 >{{ publication.titre }}</h1>
         <p>Posté le {{ publication.createdAt ? publication.createdAt|date('d-m-Y') : '' }} - 
         Mis à jour le {{ publication.updatedAt ? publication.updatedAt|date('d-m-Y') : '' }} 
         </p>
@@ -19,22 +19,27 @@
             <img loading="lazy" src="{{ vich_uploader_asset(publication, 'imageFile') }}">
         {% endif %}
         <p class="publicationContenu">{{ publication.contenu|raw }}</p>
-        {% for domaine in publication.domaines %}
-                    <button><a href= "{{path('app_domaine_show', {id:domaine.id})}}">{{domaine.nom}}</a></button>
-        {% endfor %}
+        <div class="publicationDomaines">
+            {% for domaine in publication.domaines %}
+                <button><a href= "{{path('app_domaine_show', {id:domaine.id})}}">{{domaine.nom}}</a></button>
+            {% endfor %}
+        </div>
         
         <p>
             <i class="ri-user-2-fill"></i><a href= "{{path('app_profile_show', {id:publication.user.id})}}">{{ publication.user.pseudo }}</a>
             <i class="ri-chat-1-fill"></i>{{ publication.commentaires|length }}
-            <i class="ri-thumb-up-fill"></i>{{ publication.likes|length }}
-            {{ publication.statut ? 'Publié' : 'Brouillon' }}    
+            {{ include('components/_publicationLike.html.twig', {'publication': publication}) }}
+            {# {{ publication.statut ? 'Publié' : 'Brouillon' }}     #}
         </p>
     
         {{ include('components/_partage.html.twig') }}
+        <div class="publicationFooter">
         {% if is_granted('ROLE_ADMIN') or app.user == publication.user %}   
             {{ include('publication/_delete_form.html.twig') }}
-            <button href="{{ path('app_publication_edit', {'id': publication.id}) }}">Modifier la publication</button>
+            <button><a href="{{ path('app_publication_edit', {'id': publication.id}) }}">Modifier la publication</a></button>
         {% endif %}
+        {{include('components/_publierBrouillon.html.twig', {'publication': publication})}}
+        </div>
     </article>
     
          

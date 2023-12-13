@@ -6,6 +6,10 @@
                                 {% if 'ROLE_ADMIN' in user.roles %}Admin {% endif %}
                             </td>
                             <td>
+                                {# bouton pour s'abonner #}
+                                {% include 'components/_follow.html.twig' %}
+                            </td>
+                            <td>
                                 {% if 'ROLE_MEMBRE' in user.roles %}
                                     {% if user.membre.prenom and user.membre.nom is not empty %}
                                         {{user.membre.prenom}} {{user.membre.nom}}
@@ -31,13 +35,10 @@
                                 <td>{{ user.id }}</td>
                                 <td>{{ user.email }}</td>
                                 
-                                <td>{{ user.newsletter ? 'Yes' : 'No' }}</td>
-                                <td>{{ user.acceptationCgu ? 'Yes' : 'No' }}</td>
-                                <td>{{ user.actif ? 'Yes' : 'No' }}</td>
-                                
-                                <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                                <td>{{ user.newsletter ? 'Oui' : 'Non' }}</td>
+                                <td>{{ user.actif ? 'Oui' : 'Non' }}</td>
                                 <td>
-                                    <button><a href="{{ path('app_profile_edit', {'id': user.id}) }}">edit</a></button>
+                                    <button><a href="{{ path('app_profile_edit', {'id': user.id}) }}">Modifier</a></button>
                                 </td>
                                 {% if user.actif is null %}
                                     <td>

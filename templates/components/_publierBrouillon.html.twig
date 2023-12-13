@@ -1,0 +1,10 @@
+{% if publication.statut == false %}
+    {% if app.user is not null and 'ROLE_ADMIN' in app.user.roles or 'ROLE_PARTENAIRE' in app.user.roles %}       
+        <form method="post" action="{{ path('app_publication_publish', {'id': publication.id}) }}" onsubmit="return confirm('Etes-vous sûr de vouloir publier cette publication?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('publish' ~ publication.id) }}">
+            <button >Publier la publication</button>
+        </form>
+        <button><a href="{{ path('app_publication_edit', {'id': publication.id}) }}">Modifier la publication</a></button>
+        {{ include('publication/_delete_form.html.twig') }}
+    {% endif %}
+{% endif %}

@@ -94,6 +94,25 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @return User[] Returns an array of active User objects that the current user follows
+     */
+    public function findByUsersSuivis(User $currentUser)
+    {
+        return $this->createQueryBuilder('u')
+        ->leftJoin('u.abonnement', 'abonnement')
+        ->andWhere('u.roles NOT LIKE :roleAdmin')
+        ->setParameter('roleAdmin', '%ROLE_ADMIN%')
+        ->andWhere('u.actif = :actif')
+        ->setParameter('actif', true)
+        ->andWhere(':currentUser MEMBER OF u.abonnement')
+        ->setParameter('currentUser', $currentUser)
+        ->addOrderBy('u.roles', 'DESC')
+        ->addOrderBy('u.Pseudo', 'ASC')
+        ->getQuery()
+        ->getResult();
+}
     
 //    /**
 //     * @return User[] Returns an array of User objects

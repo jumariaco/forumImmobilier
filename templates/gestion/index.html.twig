@@ -52,12 +52,36 @@
             {% endfor %}
      {% endif %}
 
-     <h2> Mes brouillons</h2>
-        {% for publication in brouillons %}
-            {% include 'components/_publications.html.twig' %}
-        {% endfor %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <h2>Gestion des titres</h2>
 
-Mon classement :   A mettre aussi dans le profil
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for titre in titres %}
+                <tr>
+                    <td>{{ titre.nom }}</td>
+                    <td>
+                        <button><a href="{{ path('app_admin_titre_edit', {'id': titre.id}) }}">Modifier</a></button>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <button><a href="{{ path('app_admin_titre_new') }}">Nouveau titre</a></button>
+    {% endif %}
+
+{# Mon classement :   A mettre aussi dans le profil
 NOmbre de commentaire choix retenu
 + NOmbre de likes (à mes publications et commentairees)
 =nombre de points total = utilité de l'user
@@ -74,7 +98,7 @@ Liste des nouveaux commentaires à mes publications (tous)
 
 Liste de mes publications en attente d'un choix de commentaire retenu par moi (pour tous)
 
-Liste des personnes ayant répondu à mes commentaires (visible par tous)
+Liste des personnes ayant répondu à mes commentaires (visible par tous) #}
 
 
 {% endblock %}

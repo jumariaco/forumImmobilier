@@ -3,39 +3,18 @@
 {% block title %}Domaine index{% endblock %}
 
 {% block body %}
-    <h1>Domaine index</h1>
+{% include 'components/_slogan.html.twig' %}
+</br><br/><br/></br><br/>
+    <h1>Nos domaines</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>DeletedAt</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div>
         {% for domaine in domaines %}
-            <tr>
-                <td>{{ domaine.id }}</td>
-                <td>{{ domaine.nom }}</td>
-                <td>{{ domaine.createdAt ? domaine.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ domaine.updatedAt ? domaine.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ domaine.deletedAt ? domaine.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_domaine_show', {'id': domaine.id}) }}">show</a>
-                    <a href="{{ path('app_domaine_edit', {'id': domaine.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
+          
+                <button class="publication"> <a href="{{ path('app_domaine_show', {'id': domaine.id}) }}">{{ domaine.nom }}</a></button>
+              
         {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_domaine_new') }}">Create new</a>
+    </div>
+{% if is_granted('ROLE_ADMIN')  %}
+    <a href="{{ path('app_domaine_new') }}">Créer un nouveau domaine</a>
+{% endif %}
 {% endblock %}

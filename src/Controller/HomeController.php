@@ -52,6 +52,30 @@ class HomeController extends AbstractController
 
        
     }
+    #[Route('/{id}', name: 'app_publication_delete', methods: ['POST'])]
+    public function delete(Request $request, Publication $publication, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$publication->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($publication);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+    }
+    #[Route('/{id}/publish', name: 'app_publication_publish', methods: ['POST'])]
+    public function publish(Request $request, Publication $publication, EntityManagerInterface $entityManager): Response
+    {
+        // Vérifiez le jeton CSRF
+        if ($this->isCsrfTokenValid('publish' . $publication->getId(), $request->request->get('_token'))) {
+            // Modifiez le statut de la publication
+            $publication->setStatut(true);
+
+            // Enregistrez les modifications
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+    }
 
  
 

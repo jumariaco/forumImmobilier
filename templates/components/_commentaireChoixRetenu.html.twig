@@ -1,0 +1,8 @@
+
+
+{% if publication.user == app.user %}
+        <form method="post" action="{{ path('app_commentaire_retenu', {'id': commentaire.id}) }}" onsubmit="return confirm('Etes-vous sûr de valider ce commentaire comme meilleure solution ?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('commentaireChoixRetenu' ~ commentaire.id) }}">
+            <button class="btn"><i class="ri-verified-badge-fill"></i> Commentaire élu meilleure solution à ma publication ?</button>
+        </form>
+{% endif %}

@@ -61,6 +61,7 @@
                     <tr>
                         <th>Pseudo</th>
                         <th>Roles</th>
+                        <th> </th>
                         <th>Prénom Nom</th>
                         <th>Métier</th>
                         <th>Inscrit depuis le </th>
@@ -78,7 +79,8 @@
                 </thead>
                 <tbody>
                     {% for user in userResults %}
-                        {% include 'components/_users.html.twig' %}
+                        {# {% include 'components/_users.html.twig' %} #}
+                        {% include 'components/_profils.html.twig' %}
                     {% endfor %}
                 </tbody>
             </table>

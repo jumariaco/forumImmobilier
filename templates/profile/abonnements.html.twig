@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+
+    {% include 'components/_slogan.html.twig' %}
+    </br></br></br>
+    
+    <br/><br/>
+    <h1>Vos abonnements</h1>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Pseudo</th>
+                <th>Roles</th>
+                <th> </th>
+                <th>Prénom Nom</th>
+                <th>Métier</th>
+                <th>Inscrit depuis le </th>
+                {% if is_granted('ROLE_ADMIN') %}  
+                    <th>Id</th>
+                    <th>Email</th>
+                    <th>Newsletter</th>
+                    <th>Actif</th>
+                    <th> </th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in usersSuivis %}
+            {% include 'components/_profils.html.twig' %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <p>Découvrez des utilisateurs qui pourraient vous intéresser !</p>
+    <button><a href="{{ path('app_profile_index') }}">Partons à la découverte</a></button>
+
+{% endblock %}

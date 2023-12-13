@@ -1,45 +1,15 @@
- {# <a href="{{ path('app_publication_show', {'id': publication.id}) }}">
- <article class="publication">
-                        <h2>{{ publication.titre }}</h2>
-                        <p class="publicationContenu">{{ publication.contenu|u.truncate(100, '...')|raw }} </p>
-                        <p>{% if vich_uploader_asset(publication, 'imageFile') %}
-                                <img loading = "lazy" src="{{ vich_uploader_asset(publication, 'imageFile') }}">
-                            {% endif %}
-                        </p>
-                        {% for domaine in publication.domaines %}
-                            <button>{{ domaine.nom }}</button>
-                        {% endfor %}
-                        <p>Posté le {{ publication.createdAt ? publication.createdAt|date('d-m-Y') : '' }} 
-                            <i class="ri-user-2-fill"></i>{{ publication.user.pseudo }}
-                            <i class="ri-chat-1-fill"></i>{{ publication.commentaires|length }}
-                            <i class="ri-thumb-up-fill"></i>{{ publication.likes|length }}
-                        {{ publication.statut ? 'Publié' : 'Brouillon' }}    
-                        </p>
-                        {% if app.user is not null and ('ROLE_ADMIN' in app.user.roles or publication.user == app.user) %}
-                            <button><a href="{{ path('app_publication_edit', {'id': publication.id}) }}">edit</a></button>
-                        {% endif %}
-                        {% if publication.statut == false %}
-                            {% if app.user is not null and 'ROLE_ADMIN' in app.user.roles or 'ROLE_PARTENAIRE' in app.user.roles %}       
-                                <a href="{{ path('app_publication_delete', {'id': publication.id}) }}">delete</a>
-                                <a href="{{ path('app_publication_edit', {'id': publication.id}) }}">edit</a>
-                                <button  type="submit">Publier la publication-bouton à travailler</button>
-                            {% endif %}
-                        {% endif %}
-                      
-                        
-                        
-    </article>  
-</a> #}
+
+
 
  <a href="{{ path('app_publication_show', {'id': publication.id}) }}">
- <article class="publication">
+ <article>
     <div class="publicationBody">
         <div class="publicationBodyLeft">
             <div>Posté le {{ publication.createdAt ? publication.createdAt|date('d-m-Y') : '' }}</div>
             <div><i class="ri-user-2-fill"></i>{{ publication.user.pseudo }}</div>
             <div><i class="ri-chat-1-fill"></i>{{ publication.commentaires|length }}</div>
             <div><i class="ri-thumb-up-fill"></i>{{ publication.likes|length }}</div>
-            <div>{{ publication.statut ? 'Publié' : 'Brouillon' }}  </div>
+            {# <div name="statut" value="False">{{ publication.statut ? 'Publié' : 'Brouillon' }}  </div> #}
         </div>
         <div class="publicationBodyRight">
             <h2>{{ publication.titre }}</h2>
@@ -57,15 +27,11 @@
     </div>              
     <div class="publicationFooter">
         {% if app.user is not null and ('ROLE_ADMIN' in app.user.roles or publication.user == app.user) %}
-            <button><a href="{{ path('app_publication_edit', {'id': publication.id}) }}">edit</a></button>
+            {{ include('publication/_delete_form.html.twig') }}
+            <button><a href="{{ path('app_publication_edit', {'id': publication.id}) }}">Modifier</a></button>
+            {{ include('publication/_delete_form.html.twig') }}
         {% endif %}
-        {% if publication.statut == false %}
-            {% if app.user is not null and 'ROLE_ADMIN' in app.user.roles or 'ROLE_PARTENAIRE' in app.user.roles %}       
-                <a href="{{ path('app_publication_delete', {'id': publication.id}) }}">delete</a>
-                <a href="{{ path('app_publication_edit', {'id': publication.id}) }}">edit</a>
-                <button  type="submit">Publier la publication-bouton à travailler</button>
-            {% endif %}
-        {% endif %}
+        {{include('components/_publierBrouillon.html.twig', {'publication': publication})}}
     </div>
     {% if not loop.last %}<hr>{% endif %}
 </article></a>

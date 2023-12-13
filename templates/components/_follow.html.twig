@@ -1,0 +1,11 @@
+{# bouton pour s'abonner #}
+    {% if app.user and app.user != user %}
+        {% set isFollowing = app.user.abonnes.contains(user) %}
+
+        <form method="post" action="{{ path('app_user_follow', {'id': user.id}) }}">
+            <button type="submit">
+                {{ isFollowing ? 'Ne plus suivre' : 'Suivre' }}
+            </button>
+            <input type="hidden" name="_token" value="{{ csrf_token('follow' ~ user.id) }}">
+        </form>
+    {% endif %}

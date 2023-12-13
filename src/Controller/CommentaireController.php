@@ -25,20 +25,10 @@ class CommentaireController extends AbstractController
     #[Route('/new', name: 'app_commentaire_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $commentaire = new Commentaire();
-        $form = $this->createForm(CommentaireType::class, $commentaire);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($commentaire);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_commentaire_index', [], Response::HTTP_SEE_OTHER);
-        }
-
+        
+        
         return $this->renderForm('commentaire/new.html.twig', [
             'commentaire' => $commentaire,
-            'form' => $form,
         ]);
     }
 
@@ -67,6 +57,28 @@ class CommentaireController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    
+
+    #[Route('/{id}/choix-retenu', name: 'app_commentaire_retenu', methods: ['POST'])]
+    public function commentaireChoixRetenu(Request $request, Commentaire $commentaire, EntityManagerInterface $entityManager): Response
+    {
+        // Vérifiez le jeton CSRF
+        if ($this->isCsrfTokenValid('commentaireChoixRetenu' . $commentaire->getId(), $request->request->get('_token'))) {
+            // Modifiez le booléen du choixRetenu du commentaire
+            $commentaire->setChoixRetenu(true);
+
+            // Enregistrez les modifications
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+        
+    }
+
+  
+
+
 
     #[Route('/{id}', name: 'app_commentaire_delete', methods: ['POST'])]
     public function delete(Request $request, Commentaire $commentaire, EntityManagerInterface $entityManager): Response

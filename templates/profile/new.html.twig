@@ -3,19 +3,22 @@
 {% block title %}New User{% endblock %}
 
 {% block body %}
+{% include 'components/_slogan.html.twig' %}
+<br/><br/><br/><br/><br/>
     {% if 'app_profile_new_admin' in app.request.attributes.get('_route') %}
+   
     <h1>S'inscrire en tant qu'administrateur</h1>
     {% elseif 'app_profile_new_partenaire' in app.request.attributes.get('_route') %}
     <h1>S'inscrire en tant que partenaire</h1>
     {% else %}
     <h1>S'inscrire en tant que membre</h1>
     {% endif %}
-
+    <form class="creationForm">
     {{ include('profile/_form.html.twig') }}
 
     {# Ouverture d'un nouvel onglet avec lien vers pages mentions légales #}
     <a href="{{path ('app_mentions_legales')}}" id="cgu-link" target="_blank">Lire nos CGU</a>
-    
+    <form>
   
 {% endblock %}
 

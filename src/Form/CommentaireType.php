@@ -37,11 +37,11 @@ class CommentaireType extends AbstractType
             ->add('parent', HiddenType::class, [
                 'mapped' => false
             ])
-            // test
+            
             ->add('enfant', HiddenType::class, [
                 'mapped' => false
             ])
-            // fin test
+            
             ->add ('envoyer', SubmitType::class)
         ;
     }

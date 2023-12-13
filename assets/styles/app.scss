@@ -5,36 +5,38 @@ body {
     font-size : 18px;
 }
 
-/*vue mobile*/
-// @media (max-width:767px) {
-//     body{
-//         font-size : 20px;
-//     }
+// .debutPage{
+//     top: 180px;
+//     margin-bottom : 20px;
 // }
 
+
+
+
 // sur tout le site retire les border et padding et margin
-form {
-    fieldset{
-        border:none;
-        // padding:20px 30px;
-        margin:20px 30px;
-    }
-  }
+.creationForm {
+        // border:none;
+        padding:20px 30px;
+        // margin:20px 30px;
+        width : 90vw;
+        margin : 0 auto;
+}
+    
 
 
 
 //   choix multiples avec barre de scroll
-.form_scrollable-checkboxes {
-    display: flex;
-    flex-direction: column;
-    height: 10rem;
-    width: 400px;
-    overflow: scroll;
-    background-color: white;
-    input {
-        float: left;
-    }
-}
+// .form_scrollable-checkboxes {
+//     display: flex;
+//     flex-direction: column;
+//     height: 10rem;
+//     width: 400px;
+//     overflow: scroll;
+//     background-color: white;
+//     input {
+//         float: left;
+//     }
+// }
 
 
 
@@ -86,6 +88,32 @@ header{
 }
 
 // -----------------fin navbar-----------------
+
+// ----------NAVBAR RESULTATS DE RECHERCHE-----------
+.nav-tabs {
+    display:flex;
+    position:fixed;
+    width:100%;
+    z-index:5;
+    padding-top: 45px;
+    border-bottom: 1px solid $secondary;
+    background-color: $light;
+    height : 100px;
+}
+
+/*vue mobile*/
+@media (max-width:767px) {
+    .nav-tabs .nav-link {
+        font-size: 9px;
+    }
+    .nav-tabs {
+        height : 80px;
+    }
+}
+
+
+
+// ------------fin navbar resultats de recherche-------------
 
 
 // ----------BOUTONS D'INSCRIPTION EN PAGE LOGIN-----------
@@ -292,24 +320,6 @@ $base-size: 100px;
 // ----------FIN BOUTONS INSCRIPTION SUR PAGE LOGIN-----------
 
 
-// ----------NAVBAR RESULTATS DE RECHERCHE-----------
-.nav-tabs {
-    display:flex;
-    position:fixed;
-    width:100%;
-    z-index:5;
-    padding-top: 45px;
-    border-bottom: 1px solid $secondary;
-    background-color: $light;
-}
-
-
-
-
-
-// ------------fin navbar resultats de recherche-------------
-
-
 // -------------------HOME-------------------
 .hidden {
     opacity:0;
@@ -321,6 +331,8 @@ $base-size: 100px;
     height:20px;
     display:block;
     position:absolute;
+    margin-top : 50px;
+    margin-bottom : 40px;
   }
 .console-underscore {
     display:inline-block;
@@ -329,10 +341,18 @@ $base-size: 100px;
     left:10px;
   }
 
+/*vue tablette*/
+@media (min-width:768px) and (max-width:1199px) {
+    .console-container {
+        font-size:39px;
+    }
+}
+
+
 /*vue mobile*/
 @media (max-width:767px) {
     .console-container {
-        font-size:30px;
+        font-size:25px;
     }
 }
 
@@ -359,8 +379,13 @@ button a{
     color: $light;
 }
 
+.btnAbonnements{
+    align-content : center;
+}
+
 
 //-----------------------PUBLICATIONS ET ARTICLES-----------------
+
 article{
     width : 90vw;
     margin : 0 auto;
@@ -389,49 +414,18 @@ article{
     margin-bottom:3px;
 }
 
-
-
-
-// .grillePublications{
-//     display:flex;
-//     flex-wrap : wrap;
-//     justify-content: center;
-//     align-items : center;
-//     margin : 2px 5px 2px 5px;
-// }
-
-// .publication{
-//     background-color: $light;
-//     flex-basis : 30%;
-//     flex-grow:1;
-//     flex-shrink: 1;
-//     padding:15px;
-//     margin:10px;
-//     border : 3px solid $primary;
-//     border-radius: 20px;
-//     text-align: center;
+// publication individuelle
+.publicationFooter{
+    display: flex;
+    flex-direction:row;
+    // justify-content: space-between;
     
-// }
+    flex-wrap: wrap;
+}
 
-// .publication:hover{
-//     border : 4px solid $tertiary;
-//     cursor: pointer;
-// }
-
-// .publicationContenu{
-//     text-align: justify;
-// }
-
-// .publication p{
-//     margin : 10px;
-// }
-
-// .publication button{
-//     margin: 3px;
-// }
-
-
-
+.publicationFooter button{
+    margin: 10px;
+}
 
 
 .alert {
@@ -447,34 +441,58 @@ article{
     justify-content: center;
     align-items: center;
     flex-direction:row;
-    
+}
+
+// .partage i{
+//     size : 100px;
+// }
+
+.rs{
+    width : 100px;
+    height: 100px;
 }
 // -------------------FIN PUBLICATIONS ET ARTICLES-----------------
 
 // ---------------------COMMENTAIRES---------------------
+.commentaire{
+    width : 90%;
+    margin : 0 auto;
+}
+
+.commentaire p{
+    margin : 0px;
+}
+
+.commentaireForm button{
+    margin : 5px;
+}
+
 .enfant {
     margin-left : 60px;
 }
 
-.petitenfant {
+.petitEnfant {
     margin-left : 120px;
 }
+
+.commentaireReponse{
+    color : $secondary;
+    font-style: italic;
+    margin-top : 0;
+}
+
+
 // -------------------FIN COMMENTAIRES---------------------
+.buttonUsers {
+    width : 80%;
+}
 
 /*vue mobile*/
 @media (max-width:767px)  {
     .publicationBodyLeft{       
        font-size: 12px;
     }
-    // .grillePublications {
-    //     flex-direction: column;
-    // }
-    // .publicationContenu{
-    //     font-size: 40px;
-    // }
-    // article {
-    //     flex-basis: 100%;
-    // }
+
     
 }
 
